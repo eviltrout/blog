@@ -1,0 +1,9 @@
+<% blog.articles[0...10].each do |article| %>
+<article>
+  <h1><a href="<%= article.url %>"><%= article.title %></a></h1> 
+  <small><%= article.date.strftime('%b %e %Y') %></small>
+  <div class='contents'><%= article.body %></div>
+
+  <a href="<%= article.url %>#disqus_thread">View the full article to comment on it</a>
+</article>
+<% end %>

@@ -1,0 +1,81 @@
+<!doctype html>
+<!--[if lt IE 7]> <html class="no-js lt-ie9 lt-ie8 lt-ie7" lang="en"> <![endif]-->
+<!--[if IE 7]>    <html class="no-js lt-ie9 lt-ie8" lang="en"> <![endif]-->
+<!--[if IE 8]>    <html class="no-js lt-ie9" lang="en"> <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en"> <!--<![endif]-->
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta http-equiv='X-UA-Compatible' content='IE=edge;chrome=1' />
+    <%= favicon_tag 'favicon.ico' %>
+    <link rel="alternate" type="application/atom+xml" title="Atom feed" href="/feed.xml" />
+
+    <%= stylesheet_link_tag 'bootstrap.min' %>
+    <%= stylesheet_link_tag 'bootstrap-responsive' %>
+    <%= stylesheet_link_tag 'style-feb16' %>
+    <%= stylesheet_link_tag 'highlight' %>
+    <%= javascript_include_tag 'highlight.pack' %>
+    <link href='http://fonts.googleapis.com/css?family=Paytone+One|Ubuntu:400,700,300italic' rel='stylesheet' type='text/css'>
+
+    <title><% if defined?(current_page) and current_page.respond_to?(:title) %><%= current_page.title %> - <% end %>Evil Trout's Blog</title>
+
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
+    <script type="text/javascript">
+      var _gaq = _gaq || [];
+      _gaq.push(['_setAccount', 'UA-2578052-2']);
+      _gaq.push(['_trackPageview']);
+
+      (function() {
+        var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+        ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+        var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+      })();
+
+    </script>
+
+  </head>
+  <body>
+
+    <div class='container-fluid'>
+        <div class='row-fluid'>
+          <div class='span9 content'>
+            <%= yield %>
+          </div>
+          <div class='span3'>
+            <section class='sidebar'>
+              <a href='/'><%= image_tag 'trout.png', class: 'avatar', alt: 'Evil Trout Cartoon' %></a>
+
+              <h1>Evil Trout</h1>
+
+              <h2>Robin Ward</h2>
+
+              <a href="https://twitter.com/evil_trout" class="twitter-follow-button" data-show-count="false" data-size="large">Follow @evil_trout</a>
+              <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0];if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src="//platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");</script>
+
+              <section class='about'>
+                <p>I'm the co-founder of <a href="http://www.discourse.org/">Discourse</a>.</p>
+                <p>Before that, I created <a href="http://forumwarz.com">Forumwarz</a>.</p>
+                <p>I live in Toronto. I like web development, technology, video games and pop culture.</p>
+                <p>All opinions are my own and don't necessarily reflect those of my employer.</p>
+
+                <a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/3.0/deed.en_US"><img alt="Creative Commons License" style="border-width:0" src="http://i.creativecommons.org/l/by-nc-sa/3.0/88x31.png" /></a>
+
+              </section>
+
+            </section>
+          </div>
+
+        </div>
+      </div>
+
+
+
+  </body>
+
+  <script>
+    $(document).ready(function() {
+      $('pre code').each(function(i, e) {hljs.highlightBlock(e)});
+    });
+  </script>
+
+</html>
