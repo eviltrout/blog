@@ -1,4 +1,4 @@
-=== Evil Trout's Blog
+### Evil Trout's Blog
 
 This is the source code to my blog, which can be found at http://eviltrout.com.
 
