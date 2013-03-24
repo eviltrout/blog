@@ -5,7 +5,7 @@ date: 2013-03-23
 
 {:javascript: class=javascript}
 
-[Ember Data](https://github.com/emberjs/data) is a peristence layer for [Ember.Js](http://emberjs.com/).
+[Ember Data](https://github.com/emberjs/data) is a persistence layer for [Ember.Js](http://emberjs.com/).
 Unlike Ember, which currently has a candidate for a 1.0 release, Ember Data is still very much
 a work in progress. This has been a source of confusion for people who are learning Ember, as the two
 frameworks are complimentary but currently exist in different realms of stability.
@@ -17,7 +17,7 @@ and time consuming.
 
 One thing that is not always clear to people starting with Ember is that **Ember works perfectly well
 without Ember Data**! Trust me on this: [Discourse](https://github.com/discourse/discourse) doesn't use
-Ember Data for peristence and it's working quite well. Moreover, *using AJAX with Ember is something that
+Ember Data for persistence and it's working quite well. Moreover, *using AJAX with Ember is something that
 is not difficult to do*.
 
 ### Ember Models that are just Objects
@@ -80,7 +80,7 @@ instances of `RedditLink` as we go:
 
 
 `$.getJSON` is an asynchronous call. It follows that our model's finder method will have to
-be asynchronous as well. One common approach to dealing with this is to pass a callback funciton to
+be asynchronous as well. One common approach to dealing with this is to pass a callback function to
 our finder method. When the `$.getJSON` call finishes, it can execute the callback with the result.
 What happens, though, when you need to handle the errors? You'd have to supply two callbacks: one
 for the error callback and one for the success callback.
@@ -96,7 +96,7 @@ attach them to the `Promise` object that your function returns. It ends up being
 and simpler to follow. Additionally, Promises can be *chained*, so that the result of one promise is only
 passed through to the next function in the chain once it is complete.
 
-jQuery conventiently return promises from all its AJAX calls, so we can just make use of it. Here's
+jQuery conveniently return promises from all its AJAX calls, so we can just make use of it. Here's
 how our finder looks, returning a promise:
 
     App.RedditLink.reopenClass({
@@ -132,7 +132,7 @@ The [code for the application](https://github.com/eviltrout/emberreddit/blob/mas
 short, which I think reflects Ember's greatest strength: as a developer you have to write less code to get
 stuff done.
 
-I emplore you to not be scared off by Ember Data's current state. Ember itself is quite stable, and it's
+I implore you to not be scared off by Ember Data's current state. Ember itself is quite stable, and it's
 easy to get started with AJAX calls like this today.
 
 
