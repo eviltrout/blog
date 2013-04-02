@@ -17,7 +17,7 @@ If you want a controller to speak to another in your app, previously you could d
       someMethod: function() {
         this.get('controllers.bar').hello();
         this.get('controllers.baz').goodbye();
-      }    	
+      }
     });
 {:javascript:}
 
@@ -42,5 +42,5 @@ You can just do:
 
 Pretty slick!
 
-
+<%= partial 'embergarten_footer' %>
 

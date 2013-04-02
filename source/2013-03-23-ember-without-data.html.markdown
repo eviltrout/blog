@@ -135,9 +135,4 @@ stuff done.
 I implore you to not be scared off by Ember Data's current state. Ember itself is quite stable, and it's
 easy to get started with AJAX calls like this today.
 
-
-
-
-
-
-
+<%= partial 'embergarten_footer' %>
