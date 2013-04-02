@@ -1,5 +1,5 @@
 ---
-title: "Adding to Discourse using Ember.js Part 3: Custom Views"
+title: "Using Ember.js Part 3: Custom Views"
 date: 2013-04-01
 ---
 
@@ -7,12 +7,12 @@ date: 2013-04-01
 
 <%= partial 'tutorial_series' %>
 
-### Most of the time, you don't need them!
+### Who needs views?
 
-In an Ember application, the "View" part of your MVC will usually just be plain old
+In an Ember application, the "View" part of your MVC will often just be plain old
 handlebars templates. You might have noticed that in the first two parts of this
 tutorial series, I created `Controller` classes but I didn't have to create equivalent
-`View` classes -- templates were enough!
+`View` classes.
 
 So when is a `View` necessary? The [Ember View Guide](http://emberjs.com/guides/views/)
 explains it nicely:
@@ -23,17 +23,16 @@ explains it nicely:
 > * When you want to create a re-usable component
 
 Creating a reusable component is one of the most interesting things you can do in an
-Ember app. Let me show you an example of one I added to [Discourse](http://discourse.org)
-recently.
+Ember app. Let me show you an example of one I added to Discourse recently.
 
 ### The "hotness" control
 
-In Discourse, if a moderator wants to edit a category, they get a modal that looks
-like this:
+In Discourse, if a moderator clicks 'edit' on a category, they are presented with a modal
+that looks like this:
 
 <%= image_tag 'posts/edit-category.png', class: 'screenshot', alt: 'Editing a Category' %>
 
-The "hotness" attribute is there to allow the moderators of a site to choose the
+The "Hotness" attribute is there to allow the moderators of a site to choose the
 topics they want featured on the "Hot" list. The idea is that categories that have a
 higher hotness will appear more frequently than those with a lower hotness.
 
@@ -55,16 +54,14 @@ we can include a custom control called `Discourse.HotnessView` in our
 
 The `hotnessBinding` attribute tells Ember that we want to create a
 [binding](http://emberjs.com/guides/object-model/bindings/) between our control and the
-category's `hotness` property.
-
-If the hotness changes within the category instance, the control will be updated to that value
-automatically. Conversely, if the control updates the property, the category model will
-be updated to the new value as well.
+category's `hotness` property. If the category model's hotness changes, the
+control will be updated to that value automatically. Conversely, if the control updates
+the property, the category model will be updated to the new value as well.
 
 
 ### Implementing our View
 
-To implement our view, we should create a file called `hotness_view.js` and put it under
+To implement our view, we'll create a file called `hotness_view.js` and put it under
 `discourse/app/views` in our javascripts folder.
 
 Let's start with something basic:
@@ -74,16 +71,18 @@ Let's start with something basic:
       templateName: 'hotness'
     });
 
-If we created our view like this, ember would render the 'hotness' handlebars template
-at the point where we added our `{{view Discourse.HotnessView}}` markup.
+If we create a view like this, Ember will render the 'hotness' handlebars template
+where we added our `{{view Discourse.HotnessView}}` markup.
 
-If you use your web browser's inspector to inspect a rendered handlebars template, you'll
-notice that all views are rendered into HTML as `<div>` tags. (You might also see a bunch
-of views you didn't create. All handlebars templates end up in views in Ember's internals.)
+If you open your web browser's inspector you'll notice that all views are rendered into HTML
+as `<div>` tags. (You'll also see a bunch of views you didn't create. All handlebars
+templates end up in views in Ember's internals.) You can also change the type of tag
+Ember creates by adding a `tagName` property, but in this case a div will work just
+fine.
 
-Ember allows you to add custom class names to the div that will contain your view by
-using to the `classNames` property. In our case, we want our hotness view to have a class
-name of `.hotness-control` so we can style it via CSS.
+Ember allows you to add custom class names to the div container by
+using to the `classNames` property. In our case, we wanted our hotness view to have a class
+name of `.hotness-control` for styling purposes.
 
 We can now implement a template for our view. Here's how our HTML should look:
 
@@ -99,16 +98,15 @@ We can now implement a template for our view. Here's how our HTML should look:
     <button value="10">10</button>
     <button value="11">11</button>
 
-The `selected` class will render the button in red so we know it's the currently selected
-one.
+The `selected` class will render current hotness button in red.
 
-Now we find ourselves in a bit of a quandary. Handlebars has a really useful `{{each}}`
+Now we find ourselves in a bit of a quandary: Handlebars has a really useful `{{each}}`
 helper for iterating through a list of items, but in this case our items are simply
 a number range.
 
-We *could* model this in by creating an array of objects in our view to represent numbers
+We *could* model this by creating an array of objects in our view to represent numbers
 1 through 11. We could then use `{{each}}` to iterate through them all, but it seems quite
-wasteful to allocate a bunch of objects when all we're doing is listing them in order.
+wasteful to allocate a bunch of objects when all we're doing is listing basic numbers.
 
 Handlebars is great for rendering *most* things you throw at it, but this is one of the few
 cases where it feels like you're fighting against the abstraction it provides. Fortunately,
@@ -118,7 +116,7 @@ there's a way we can avoid using handlebars altogether for our view.
 
 If you create a method called `render` in your view, Ember will use its result instead of a
 template for rendering. It will be called with a buffer that accepts a `push` call with a
-string to append a string to it. Here's an example:
+string value. Here's an example:
 
     Discourse.HelloView = Discourse.View.extend({
       render: function (buffer) {
@@ -146,20 +144,21 @@ Let's use this render method to create our buttons, adding the selected class wh
       }
     });
 
-And now if we reload our page, we'll see our cool hotness control. The correct button
-will be highlighted thanks to a comparison with the `hotness` property of the view.
+And now if we reload our page, we'll see our hotness control! The correct button
+will be highlighted thanks to a comparison with the `hotness` property of the view,
+which is bound to the `hotness` property of our model.
 
 ### Potential Drawbacks
 
 Rendering using the buffer like this can be quite useful, but it does some tradeoffs.
 
-The first is that your code is uglier. Appending strings is no where near as easy
+The first is that your code will be uglier. Appending strings is no where near as easy
 to read or write as a simple handlebars template. If you want to divide up
 responsibilities on your team between front end developers and designers, you'll
 probably find that they are much more comfortable changing a handlebars template
 than the above.
 
-The second is that *your bound properties wont automatically update*. Consider this:
+The second is that **your bound properties wont automatically update**. Consider this:
 what would happen if you changed the `hotness` property within your category
 model? Since it's bound to the `HotnessView` the hotness view will receive the
 updated value, but it won't know to render again. We've lost some of the magic that
@@ -173,33 +172,31 @@ There's a way around this. We can add the following method to  `Discourse.Hotnes
 
 The `hotnessChanged` method is now set up as an [observer](http://emberjs.com/guides/object-model/observers/)
 on the `hotness` property of the view. Whenever the `hotness` property changes,
-the observer will be called.
-
-In this case, all we want to happen is for the view to render again. `this.rerender()`
-tells Ember to do just that.
+the observer will be called. In this case, all we want to happen is for the view
+to render again. `this.rerender()` tells Ember to do just that.
 
 Now our control will properly update if the hotness changes.
 
 ### An Aside: Rendering Performance
 
 There is another benefit to rendering controls using the buffer rather than handlebars:
-it can be considerably faster. You see, Ember is never quite sure what properties in your
+it can be considerably faster. Ember is never quite sure what properties in your
 template will change and how frequently that will happen. By default, it assumes anything
-can and will change, and spends a considerable amount of rendering time setting up
+*can* and *will* change, and spends a considerable amount of rendering time setting up
 the structures it needs to observe them.
 
 This is less pronounced on simple templates with few properties, but on large templates with
-thousands of properties you might notice.
+thousands of properties you might start to notice.
 
 There are cases where, if you know that your properties don't need to update, you can take
-advantage of the improved string rendering. It will make your code uglier
+advantage of the performance of buffer based rendering. It will make your code uglier
 and less flexible, so I suggest you think twice before converting your handlebars templates
 to `buffer.push` calls.
 
 ### Responding to Button Presses
 
 The last thing our view has to do is respond to clicks so we can update the `hotness`
-property when the user clicks on a new number value. The other powerful aspect of Ember
+property when the user clicks on a new number. The other powerful aspect of Ember
 views is they [expose user events](http://emberjs.com/guides/views/handling-events/) that you
 can deal with in a clean and elegant way. For example, we can define a `click` method like so:
 
@@ -208,12 +205,12 @@ can deal with in a clean and elegant way. For example, we can define a `click` m
     }
 
 It will be called whenever the user clicks on the view. If you've ever written jQuery code
-to handle events you'll feel right at home.
+to handle events you should feel right at home.
 
 Note: we didn't have to create the jQuery binding to the click event. Ember knew
-we wanted it by creating the `click` method. This also means we don't have to unbind the click
+we wanted it when we created the `click` method. This also means we don't have to unbind the click
 event. You can let Ember do that automatically when the View is no longer used, which is great
-for avoiding programmer errors that leak memory :)
+for avoiding programmer errors that leak memory.
 
 As you can see, the click method is called with a reference to the jQuery event of what was
 clicked on. We can use this to figure out what button the user clicked like so:
@@ -237,14 +234,16 @@ clicked on. We can use this to figure out what button the user clicked like so:
 
 Now we have a nice looking [reusable control](https://github.com/discourse/discourse/blob/master/app/assets/javascripts/discourse/views/hotness_view.js) in about 38 sloc.
 
-At some point, if we wanted to allow users to set the hotness of categories based on their
-own preferences, we could embed the same control on their user preferences using one line of
+In the future, we may allow users to set their own hotness preferences for categories to their own
+tastes. We could embed the same control on their user preferences using one line of
 handlebars. That's pretty sweet!
 
 If you're the type who's been following upcoming HTML standards, you might be familiar with
 [web components](http://www.html5rocks.com/en/tutorials/webcomponents/shadowdom/). The great thing
 about the above implementation is that it provides an abstraction that can easily be
 refactored into proper web components when more browsers support them and the timing is right.
+
+Happy coding!
 
 <%= partial 'embergarten_footer' %>
 
