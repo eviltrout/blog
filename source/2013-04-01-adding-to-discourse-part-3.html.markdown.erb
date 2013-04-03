@@ -158,7 +158,14 @@ responsibilities on your team between front end developers and designers, you'll
 probably find that they are much more comfortable changing a handlebars template
 than the above.
 
-The second is that **your bound properties wont automatically update**. Consider this:
+The second is you have to remember to escape user supplied values yourself to avoid
+XSS issues. You can do this by including the handlebars escape function and calling
+it (thanks [@krisselden](https://twitter.com/krisselden)):
+
+    var escape = Handlebars.Utils.escapeExpression;
+    buffer.push(escape(user_value));
+
+The third is that **your bound properties wont automatically update**. Consider this:
 what would happen if you changed the `hotness` property within your category
 model? Since it's bound to the `HotnessView` the hotness view will receive the
 updated value, but it won't know to render again. We've lost some of the magic that
