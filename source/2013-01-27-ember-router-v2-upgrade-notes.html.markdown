@@ -5,6 +5,7 @@ date: 2013-01-27
 
 {:javascript: class=javascript}
 
+
 I've been working on an [Ember](http://emberjs.com/) project for a while now. When I started, Ember had no official router (although you could plug in the SproutCore one) so I ended up rolling my own with a bunch of Javascript regular expressions. Since then they've released a great router, and more recently a [huge overhaul to it](http://emberjs.com/guides/routing/).
 
 On one hand, it's been frustrating to replace the router twice during this project's lifecycle. But on the other hand, each time I've seen a *serious* improvement in API quality. While upgrading from what is now known as routerv1 to routerv2, I took some notes. If you're starting a new Ember app on 1.0 this might not be of interest, but if you are looking to upgrade from routerv1 to v2, the following might come in handy!

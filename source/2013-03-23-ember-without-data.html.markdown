@@ -5,6 +5,7 @@ date: 2013-03-23
 
 {:javascript: class=javascript}
 
+
 [Ember Data](https://github.com/emberjs/data) is a persistence layer for [Ember.Js](http://emberjs.com/).
 Unlike Ember, which currently has a candidate for a 1.0 release, Ember Data is still very much
 a work in progress. This has been a source of confusion for people who are learning Ember, as the two

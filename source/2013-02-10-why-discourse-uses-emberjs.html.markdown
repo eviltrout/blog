@@ -5,6 +5,7 @@ date: 2013-02-10
 
 {:javascript: class=javascript}
 
+
 This week, I was delighted to finally reveal [Discourse](http://www.discourse.org), the app I've been working on for most of the last year in secrecy with [awesome people](http://blog.discourse.org/2013/02/the-discourse-team/). The launch got a lot of attention - we were featured on Hacker News, Slashdot, Wired, Reddit, Techcrunch and countless other places. Personally I've been floored with the amount of feedback so far. It's going to take quite some time to get through it all!
 
 One question people keep asking me is "Why did you choose [Ember.js](http://emberjs.com/)?". It's a good one, and one that I think can be considered in two ways:

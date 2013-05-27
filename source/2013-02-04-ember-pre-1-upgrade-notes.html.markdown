@@ -5,6 +5,7 @@ date: 2013-02-04
 
 This is just a quick follow up to [a post I made recently](/2013/01/27/ember-router-v2-upgrade-notes.html) about upgrading Ember to the new router. A couple small things have changed that I feel are worth mentioning. In particular they deprecated one piece of advice I gave so I wanted to correct it!
 
+
 {:javascript: class=javascript}
 
 ### this.controllerFor() inside Controllers has been deprecated
