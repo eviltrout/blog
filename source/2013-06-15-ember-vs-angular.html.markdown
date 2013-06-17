@@ -1,5 +1,5 @@
 ---
-title: "AngularJS vs Ember: It's not even close"
+title: "AngularJS vs Ember"
 date: 2013-06-15
 ---
 
@@ -13,7 +13,7 @@ There is evidence that AngularJS is beating out Ember in terms of developer mind
 
 I decided to take some time to seriously investigate AngularJS and see what all the fuss was about. I read through as much documentation, blog posts and guides as I could. I downloaded AngularJS and made simple applications. I reached out to local developers and pestered them with questions about the framework.
 
-I have a good idea now why AngularJS is gaining momentum: it is is simpler. There is a lot less to the framework and as a consequence it's easier to learn. If I were to rank the amount of tools various client side MVC frameworks give you, Angular seems to exist somewhere near the half way point between [Backbone](http://backbonejs.org/) and Ember.
+I have a good idea now why AngularJS is gaining momentum: it is simpler. There is a lot less to the framework and as a consequence it's easier to learn. If I were to rank the amount of tools various client side MVC frameworks give you, Angular seems to exist somewhere near the half way point between [Backbone](http://backbonejs.org/) and Ember.
 
 
 ### The pitfalls of simplicity
