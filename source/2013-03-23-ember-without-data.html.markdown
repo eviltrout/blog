@@ -73,9 +73,9 @@ The response from reddit's API includes the colleciton of links under `data.chil
 properties are under an additional `data` attribute. We can loop through them like so, creating
 instances of `RedditLink` as we go:
 
-    var links = [];
+    var links = Em.A();
     response.data.children.forEach(function (child) {
-      links.push(App.RedditLink.create(child.data));
+      links.pushObject(App.RedditLink.create(child.data));
     });
     // links now contains all our `RedditLink` objects!
 
@@ -105,9 +105,9 @@ how our finder looks, returning a promise:
       findAll: function(subreddit) {
         return $.getJSON("http://www.reddit.com/r/" + subreddit + "/.json?jsonp=?").then(
           function(response) {
-            var links = [];
+            var links = Em.A();
             response.data.children.forEach(function (child) {
-              links.push(App.RedditLink.create(child.data));
+              links.pushObject(App.RedditLink.create(child.data));
             });
             return links;
           }
@@ -126,13 +126,21 @@ Here's how you could you could call it and log the results from the subreddit [/
 
 ### Putting it all together
 
-I've created a [github project](https://github.com/eviltrout/emberreddit/tree/blog-post) that puts all the code from this
+I've created a [github project](https://github.com/eviltrout/emberreddit/) that puts all the code from this
 blog entry together. You can also [try it in your browser](http://emberreddit.eviltrout.com/).
 
-The [code for the application](https://github.com/eviltrout/emberreddit/blob/blog-post/js/app.js) is quite
+The [code for the application](https://github.com/eviltrout/emberreddit/blob/js/app.js) is quite
 short, which I think reflects Ember's greatest strength: as a developer you have to write less code to get
 stuff done.
 
 I implore you to not be scared off by Ember Data's current state. Ember itself is quite stable, and it's
 easy to get started with AJAX calls like this today.
+
+### Update - Jun 30 / 2013
+
+I've updated the code to use Ember 1.0 RC6 and added a bunch more comments. The code is not exactly the
+same as above, but it has a bunch of new features and is still based on the same principles. Download
+it and try it out!
+
+
 
