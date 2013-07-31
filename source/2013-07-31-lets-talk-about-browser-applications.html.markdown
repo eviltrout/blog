@@ -11,4 +11,7 @@ It wasn't recorded, but I've taken the liberty of creating a video version of th
 While the presentation is about Browser Applications, I take a large detour in the beginning to talk about
 [Discourse](http://discourse.org) and Forum software in general. Enjoy!
 
-<iframe width="560" height="315" src="//www.youtube.com/embed/li7VT0V6IAk" frameborder="0" allowfullscreen="yes"></iframe>
+<iframe width="560" height="315" src="//www.youtube.com/embed/li7VT0V6IAk" frameborder="0" allowfullscreen="yes">
+
+</iframe>
+
