@@ -1,9 +1,18 @@
-<% blog.articles[0...10].each do |article| %>
+<% blog.articles[0...15].each do |article| %>
 <article>
-  <h1><a href="<%= article.url %>"><%= article.title %></a></h1> 
+  <h1><a href="<%= article.url %>"><%= article.title %></a></h1>
   <small><%= article.date.strftime('%b %e %Y') %></small>
   <div class='contents'><%= article.body %></div>
 
   <a href="<%= article.url %>#disqus_thread">View the full article to comment on it</a>
 </article>
+<% end %>
+
+<hr>
+
+<h2>Older Posts</h2>
+
+<% blog.articles[15..-1].each do |article| %>
+  <h3><a href="<%= article.url %>"><%= article.title %></a></h3>
+  <small><%= article.date.strftime('%b %e %Y') %></small>
 <% end %>
