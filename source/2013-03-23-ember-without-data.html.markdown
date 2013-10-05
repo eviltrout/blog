@@ -129,7 +129,7 @@ Here's how you could you could call it and log the results from the subreddit [/
 I've created a [github project](https://github.com/eviltrout/emberreddit/) that puts all the code from this
 blog entry together. You can also [try it in your browser](http://emberreddit.eviltrout.com/).
 
-The [code for the application](https://github.com/eviltrout/emberreddit/blob/js/app.js) is quite
+The [code for the application](https://github.com/eviltrout/emberreddit/blob/master/js/app.js) is quite
 short, which I think reflects Ember's greatest strength: as a developer you have to write less code to get
 stuff done.
 
