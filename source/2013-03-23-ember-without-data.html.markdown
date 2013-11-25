@@ -105,11 +105,9 @@ how our finder looks, returning a promise:
       findAll: function(subreddit) {
         return $.getJSON("http://www.reddit.com/r/" + subreddit + "/.json?jsonp=?").then(
           function(response) {
-            var links = Em.A();
-            response.data.children.forEach(function (child) {
-              links.pushObject(App.RedditLink.create(child.data));
+            return response.data.children.map(function (child) {
+              return App.RedditLink.create(child.data);
             });
-            return links;
           }
         );
       }

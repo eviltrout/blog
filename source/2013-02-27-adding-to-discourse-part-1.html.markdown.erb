@@ -125,29 +125,22 @@ a report by type. We can use Ember's `reopenClass` to add a `find` class method:
 
     Discourse.Report.reopenClass({
       find: function(type) {
-        var model = Discourse.Report.create();
-        jQuery.ajax("/admin/reports/" + type, {
-          type: 'GET',
-          success: function(json) {
-            model.mergeAttributes(json.report);
-            model.set('loaded', true);
-          },
-        });
-        return(model);
+        return jQuery.ajax("/admin/reports/" + type, { type: 'GET' }.then(function(result) {
+          return Discourse.Report.create(json.report);
+        }));
       }
     });
 
 This find method makes an AJAX call to `/admin/reports/:type` on the server side and places the resulting
 data into an instance of `Discourse.Report`. Note that since AJAX is asynchronous, the find call will
-return a `Discourse.Report` immediately. When the AJAX call is completed, it merges in the result of the
-JSON response, and sets the `loaded` boolean on the object to be true.
+return a promise immediately and the report object will be created only when it finishes in the future.
 
 Let's now tell our Route to load the model when a user navigates to it. This can be done by
 implementing the `model` method. Here's our new `admin_reports_route.js`:
 
     Discourse.AdminReportsRoute = Discourse.Route.extend({
       model: function(params) {
-        return(Discourse.Report.find(params.type));
+        return Discourse.Report.find(params.type);
       },
 
       renderTemplate: function() {
@@ -162,39 +155,26 @@ and automatically make it available in our template.
 
 Let's add a simple HTML table to display the results in `admin/templates/reports.js.handlebars`:
 
-    {{#if loaded}}
-      <h3>{{title}}</h3>
+    <h3>{{title}}</h3>
 
-      <table class='table'>
+    <table class='table'>
+      <tr>
+        <th>{{xaxis}}</th>
+        <th>{{yaxis}}</th>
+      </tr>
+
+      {{#each data}}
         <tr>
-          <th>{{xaxis}}</th>
-          <th>{{yaxis}}</th>
+          <td>{{x}}</td>
+          <td>{{y}}</td>
         </tr>
-
-        {{#each data}}
-          <tr>
-            <td>{{x}}</td>
-            <td>{{y}}</td>
-          </tr>
-        {{/each}}
-      </table>
-
-    {{else}}
-      {{i18n loading}}
-    {{/if}}
+      {{/each}}
+    </table>
 
 Ember uses [Handlebars](http://handlebarsjs.com/) to render its templates. The really cool thing
 about this is if the properties you've put into your template change, Ember is smart enough
 to update them in the web browser too. You don't have to write any extra code to make sure the
 HTML re-renders, it just works!
-
-For example, in the above template, the first line is an `{{#if}}` statement that checks to
-see if the model is loaded. Remember earlier I said that the call to `Discourse.Report.find`
-returns a model right away? At first the `loaded` property will be false, but when it is
-finished loading it will be set to true.
-
-Ember will keep your template and model in sync. When the URL is first visited, it will
-display "Loading...". When the model has finished loading, the HTML table will be displayed.
 
 If you change the title property of your report, Ember is smart enough to only update
 that part of the HTML. This is known as *binding*, and it's at the core of what makes Ember

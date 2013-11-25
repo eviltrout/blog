@@ -7,6 +7,15 @@ date: 2013-04-01
 
 <%= partial 'tutorial_series' %>
 
+<section class='update'>
+  <hr>
+  <p><b>Important Update:</b> The preferred way to do this is now using <a href="http://emberjs.com/guides/components/">Ember Components</a>.</p>
+  <p>The concepts in this tutorial still work, but the Hotness control created below would be better created as a proper component
+     now that Ember has support for it. (They didn't exist when this was written.)</p>
+  <hr>
+</section>
+
+
 ### Who needs views?
 
 In an Ember application, the "View" part of your MVC will often just be plain old
@@ -50,7 +59,7 @@ You can embed a view in any handlebars template by using the `{{view}}` markup. 
 we can include a custom control called `Discourse.HotnessView` in our
 [edit_category template](https://github.com/discourse/discourse/blob/master/app/assets/javascripts/discourse/templates/modal/edit_category.js.handlebars):
 
-    {{view Discourse.HotnessView hotnessBinding="hotness"}}
+    {{view Discourse.HotnessView hotness=hotness}}
 
 The `hotnessBinding` attribute tells Ember that we want to create a
 [binding](http://emberjs.com/guides/object-model/bindings/) between our control and the
