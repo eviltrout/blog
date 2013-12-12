@@ -1,0 +1,610 @@
+<!DOCTYPE html>
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+
+  <title>Ember Tricks</title>
+
+  <meta name="description" content="Why we used Ember.js to power Discourse">
+  <meta name="author" content="Robin Ward">
+  <meta name="viewport" content="width=1024, user-scalable=no">
+
+  <!-- Style theme. More available in /themes/style/ or create your own. -->
+  <link rel="stylesheet" href="stylesheets/reset.css">
+  <link rel="stylesheet" href="stylesheets/slides.css">
+  <link rel="stylesheet" href="stylesheets/monokai_sublime.css">
+
+  <script src="./vendor/modernizr.custom.js"></script>
+  <script src="./vendor/highlight.pack.js"></script>
+
+  <script src="./vendor/jquery-2.0.3.js"></script>
+  <script src="./vendor/jquery.elastic.source.js"></script>
+  <script src="./vendor/handlebars-v1.1.2.js"></script>
+  <script src="./vendor/ember.js"></script>
+  <script src="./javascripts/app.js"></script>
+
+  <script id='application' type="text/x-handlebars">
+    <div id='stage'>
+      {{outlet}}
+    </div>
+  </script>
+
+  <script id='components/highlight-code' type='text/x-handlebars'>
+    <h3>{{filename}}</h2>
+    <pre><code {{bind-attr class="language"}}>{{codeContents}}</code></pre>
+  </script>
+
+  <script id='components/editable-code' type='text/x-handlebars'>
+    <h3>{{filename}}</h2>
+    <div class='code-container'>{{textarea value=codeContents class="code-editor"}}</div>
+  </script>
+
+  <script id='slide' type="text/x-handlebars">
+    <section class="slide">
+      {{outlet slideOutlet}}
+    </section>
+  </script>
+
+  <script id='slides/1' type="text/slide-handlebars">
+    <h1>Ember Tricks</h1>
+  </script>
+
+  <script id='slides/2' type="text/slide-handlebars">
+    <h1>Robin Ward</h1>
+  </script>
+
+  <script id='slides/3' type="text/slide-handlebars">
+    <h1>@evil_trout</h1>
+  </script>
+
+  <script id='slides/4' type="text/slide-handlebars">
+    <img class='feature' src="images/trout.png">
+  </script>
+
+  <script id='slides/5' type="text/slide-handlebars">
+    <img class='feature' src="images/discourse.png">
+  </script>
+
+  <script id='slides/6' type="text/slide-handlebars">
+    <h1>Ember.js</h1>
+  </script>
+
+  <script id='slides/7' type="text/slide-handlebars">
+    <h1>A Browser Application Framework</h1>
+  </script>
+
+  <script id='slides/7a' type="text/slide-handlebars">
+    <h1>Long-Lived</h1>
+  </script>
+
+  <script id='slides/8' type="text/slide-handlebars">
+    <h1>Handlebars</h1>
+  </script>
+
+  <script id='slides/9' type="text/slide-handlebars">
+    {{editable-code filename="welcome.handlebars" value=main name="Evil Trout"}}
+    {{view App.RenderedCode value=main type="handlebars"}}
+  </script>
+
+  <script id='slides/10' type="text/slide-handlebars">
+    <h1>Convention</h1>
+    <h2>over configuration</h2>
+  </script>
+
+  <script id='slides/11' type="text/slide-handlebars">
+    {{editable-code filename="router.js" value=main}}
+    {{view App.RenderedCode value=main customView="routeExample"}}
+  </script>
+
+  <script id='slides/12' type="text/slide-handlebars">
+    <h1>Web Components</h1>
+  </script>
+
+  <script id='slides/13' type='text/slide-handlebars'>
+    {{editable-code filename="demo.handlebars" value=main}}
+    {{editable-code filename="components/doge-text" type="component"}}
+
+    {{view App.RenderedCode value=main type="handlebars"}}
+  </script>
+
+  <script id="slides/14" type='text/slide-handlebars'>
+    <h1>Trick #1</h1>
+    <h2>Computed Property Macros</h2>
+  </script>
+
+  <script id="slides/15" type='text/slide-handlebars'>
+    {{highlight-code filename="object.js"}}
+  </script>
+
+  <script id="slides/16" type='text/slide-handlebars'>
+    {{highlight-code filename="staff.js"}}
+  </script>
+
+  <script id='slides/16a' type="text/slide-handlebars">
+    <h1>Cached</h1>
+  </script>
+
+  <script id='slides/17' type="text/slide-handlebars">
+    {{highlight-code filename="macros_extras.js"}}
+  </script>
+
+  <script id='slides/18' type="text/slide-handlebars">
+    <h1>Composable</h1>
+  </script>
+
+  <script id="slides/19" type='text/slide-handlebars'>
+    {{highlight-code filename="macros_composed.js" language="javascript"}}
+  </script>
+
+  <script id='slides/20' type="text/slide-handlebars">
+    <h1>Filterable</h1>
+  </script>
+
+  <script id="slides/21" type='text/slide-handlebars'>
+    {{highlight-code filename="macros_array.js"}}
+  </script>
+
+  <script id='slides/22' type="text/slide-handlebars">
+    <h1>Computed Properties</h1>
+    <h2>Use Them!</h2>
+  </script>
+
+  <script id='slides/22a' type='text/slide-handlebars'>
+    <h1>Trick #2</h2>
+    <h2>The Run Loop</h2>
+  </script>
+
+  <script id='slides/22b' type='text/slide-handlebars'>
+    <h1>Async Everything</h1>
+  </script>
+
+  <script id='slides/22c' type='text/slide-handlebars'>
+    {{highlight-code filename="not_updated.js" language="javascript"}}
+  </script>
+
+  <script id='slides/22d' type='text/slide-handlebars'>
+    <h1>Why?</h1>
+    <h2>Updates are Coalesced</h2>
+  </script>
+
+  <script id='slides/22e' type='text/slide-handlebars'>
+    {{highlight-code filename="coalesce.js" language="javascript"}}
+  </script>
+
+  <script id='slides/22f' type='text/slide-handlebars'>
+    <h1>How?</h1>
+    <h2>Event Queue</h2>
+  </script>
+
+  <script id='slides/22g' type='text/slide-handlebars'>
+    {{highlight-code filename="set_timeout.js" language="javascript"}}
+  </script>
+
+  <script id='slides/22h' type='text/slide-handlebars'>
+    {{highlight-code filename="schedule.js" language="plain"}}
+  </script>
+
+  <script id='slides/22i' type='text/slide-handlebars'>
+    <h1>YAGNI*</h1>
+    <h2>*Usually</h2>
+  </script>
+
+  <script id='slides/22j' type='text/slide-handlebars'>
+    {{highlight-code filename="height.js" language="javascript"}}
+    <h2 class='small'>Credit: Rob Harper</h1>
+  </script>
+
+  <script id='slides/22k' type='text/slide-handlebars'>
+    <h1>PostView x50</h1>
+    <h2>Read/Write/Read/Write...</h2>
+  </script>
+
+  <script id='slides/22ka' type='text/slide-handlebars'>
+    <h1>100 Reflows</h1>
+  </script>
+
+  <script id='slides/22l' type='text/slide-handlebars'>
+    <h1>Solution</h1>
+    <h2>De-Interlace</h2>
+  </script>
+
+  <script id='slides/22m' type='text/slide-handlebars'>
+    {{highlight-code filename="schedule_once.js" language="javascript"}}
+  </script>
+
+  <script id='slides/22n' type='text/slide-handlebars'>
+    <h1>2 Reflows</h1>
+    <h2>100 reads; 100 writes</h2>
+  </script>
+
+  <script id='slides/22o' type='text/slide-handlebars'>
+    <h1>Coalescing Yourself</h1>    
+  </script>
+
+  <script id='slides/22p' type='text/slide-handlebars'>
+    {{highlight-code filename="coalesce_self.js" language="javascript"}}    
+  </script>
+
+  <script id='slides/22q' type='text/slide-handlebars'>
+    <h1>Use Responsibly</h1>    
+  </script>
+
+  <script id="slides/23" type='text/slide-handlebars'>
+    <h1>Trick #3</h1>
+    <h2>Custom Resolver</h2>
+  </script>
+
+  <script id="slides/24" type='text/slide-handlebars'>
+    <h1>The Resolver</h1>
+    <h2>Convention over Configuration</h2>
+  </script>
+
+  <script id="slides/25" type='text/slide-handlebars'>
+    <h1>Resolves</h1>
+    <h2>'template:user' <span class='expr'>&rarr;</span> 'user'</h2>
+  </script>
+
+  <script id="slides/26" type='text/slide-handlebars'>
+    <h1>Extensible</h1>
+  </script>
+
+  <script id="slides/27" type='text/slide-handlebars'>
+    {{highlight-code filename="upper_resolver.js" language="javascript"}}
+  </script>
+
+  <script id="slides/28" type='text/slide-handlebars'>
+    {{highlight-code filename="mobile_resolver.js" language="javascript"}}
+  </script>
+
+  <script id="slides/29" type='text/slide-handlebars'>
+    <h1>Responsive First</h1>
+  </script>
+
+  <script id="slides/30" type='text/slide-handlebars'>
+    <h1>Trick #4</h1>
+    <h2>View Cloaking</h2>
+  </script>
+
+  <script id="slides/31" type='text/slide-handlebars'>
+    <h1>View Hierarchy</h1>
+    <h2>Everything is an Ember.View</h2>
+  </script>
+
+  <script id="slides/32" type='text/slide-handlebars'>
+    <img class='large-feature' src="images/views.png">
+  </script>
+
+  <script id="slides/33" type='text/slide-handlebars'>
+    <h1>Performance</h1>
+    <h2>More Views = Slower Rendering</h2>
+  </script>
+
+  <script id="slides/34" type='text/slide-handlebars'>
+    <h1>Infinite Scrolling</h1>
+    <h2>A Browser Hack</h2>
+  </script>
+
+  <script id="slides/35" type='text/slide-handlebars'>
+    {{infinite-scroll}}
+  </script>
+
+  <script id="slides/36" type='text/slide-handlebars'>
+    <h1>The Problem</h1>
+    <h2>Memory Bloat</h2>
+  </script>
+
+  <script id="slides/37" type='text/slide-handlebars'>
+    <h1>A Solution</h1>
+    <h2>Unload Off-Screen Views</h2>
+  </script>
+
+  <script id="slides/38" type='text/slide-handlebars'>
+    <h1>Another Problem</h1>
+    <h2>Viewport Jumping</h2>
+  </script>
+
+  <script id="slides/39" type='text/slide-handlebars'>
+    <h1>Another Solution?</h1>
+    <h2>Cloaking</h2>
+  </script>
+
+  <script id="slides/40" type='text/slide-handlebars'>
+    <img class='large-feature' src="images/cloak.png">
+  </script>
+
+  <script id="slides/41" type='text/slide-handlebars'>
+    {{highlight-code filename="cloaking_pseudocode.js" language="plain"}}
+  </script>
+
+  <script id="slides/42" type='text/slide-handlebars'>
+    <h1>Not that hard!</h1>
+  </script>
+
+  <script id="slides/43" type='text/slide-handlebars'>
+    <h1>ember-cloaking</h1>
+    <h2 class='small'>github.com/eviltrout/ember-cloaking</h2>
+  </script>
+
+  <script id="slides/44" type='text/slide-handlebars'>
+    {{highlight-code filename="collection_posts.js" language="handlebars"}}
+    {{highlight-code filename="cloaked_collection.js" language="handlebars"}}
+  </script>
+
+  <script id="slides/45" type='text/slide-handlebars'>
+    <h1>30% less RAM</h1>
+    <h2>Running in production</h2>
+  </script>
+
+  <script id="slides/46" type='text/slide-handlebars'>
+    <h1>Try it!</h1>
+    <h2>Complaints: @evil_trout</h2>
+  </script>
+
+  <script id="slides/47" type='text/slide-handlebars'>
+    <h1>Recap</h1>
+  </script>
+
+  <script id="slides/49" type='text/slide-handlebars'>
+    <h1>CP Macros</h1>
+    <h2>Caching &#8226; Composable &#8226; Filterable</h2>
+  </script>
+
+  <script id="slides/49a" type='text/slide-handlebars'>
+    <h1>The Run Loop</h1>
+    <h2>Schedule + Coalesce</h2>
+  </script>
+
+  <script id="slides/50" type='text/slide-handlebars'>
+    <h1>Custom Resolvers</h1>
+    <h2>Wire it yourself!</h2>
+  </script>
+
+  <script id="slides/51" type='text/slide-handlebars'>
+    <h1>Cloaked Views</h1>
+    <h2>Faster, less RAM</h2>
+  </script>
+
+  <script id="slides/52" type='text/slide-handlebars'>
+    <h1>Ember.js is Awesome!</h1>
+    <h2>This was just a taste</h2>
+  </script>
+
+  <script id="slides/53" type='text/slide-handlebars'>
+    <h1>Learn More</h1>
+    <h2 class='small'>emberjs.com</h2>
+  </script>
+
+  <script id="slides/54" type='text/slide-handlebars'>
+    <h1>Discourse</h1>
+    <h2 class='small'>github.com/discourse/discourse</h2>
+  </script>
+
+  <script id="slides/55" type='text/slide-handlebars'>
+    <h1>Thanks!</h1>
+    <h2 class='small'>eviltrout.com</h2>
+  </script>
+
+
+</head>
+
+<body class="deck-container">
+</body>
+
+<script id="components/infinite-scroll" type='text/x-handlebars'>
+  <center>
+    <svg viewBox="0 0 800 768" width="90%">
+      <rect width="200" height="700" x="50" y="25" style="stroke:rgb(255,255,255);stroke-width:3px;fill:rgba(0,0,0,0)" />
+      <line class='orig' x1="50" y1="100" x2="250" y2="100" style="stroke:rgb(200,200,200);stroke-width:3" stroke-dasharray="5,5"/>
+      <line class='orig' x1="50" y1="190" x2="250" y2="190" style="stroke:rgb(200,200,200);stroke-width:3" stroke-dasharray="5,5"/>
+      <line class='orig' x1="50" y1="280" x2="250" y2="280" style="stroke:rgb(200,200,200);stroke-width:3" stroke-dasharray="5,5"/>
+      <line class='orig' x1="50" y1="370" x2="250" y2="370" style="stroke:rgb(200,200,200);stroke-width:3" stroke-dasharray="5,5"/>
+      <line class='orig' x1="50" y1="460" x2="250" y2="460" style="stroke:rgb(200,200,200);stroke-width:3" stroke-dasharray="5,5"/>
+      <line class='orig' x1="50" y1="550" x2="250" y2="550" style="stroke:rgb(200,200,200);stroke-width:3" stroke-dasharray="5,5"/>
+      <line class='orig' x1="50" y1="640" x2="250" y2="640" style="stroke:rgb(200,200,200);stroke-width:3" stroke-dasharray="5,5"/>
+
+      <line class='new' x1="50" x2="250" y1="365" y2="365" style="display: none; stroke:rgb(200,200,200);stroke-width:3" stroke-dasharray="5,5"/>
+      <line class='new' x1="50" x2="250" y1="405" y2="405" style="display: none; stroke:rgb(200,200,200);stroke-width:3" stroke-dasharray="5,5"/>
+      <line class='new' x1="50" x2="250" y1="450" y2="450" style="display: none; stroke:rgb(200,200,200);stroke-width:3" stroke-dasharray="5,5"/>
+      <line class='new' x1="50" x2="250" y1="495" y2="495" style="display: none; stroke:rgb(200,200,200);stroke-width:3" stroke-dasharray="5,5"/>
+      <line class='new' x1="50" x2="250" y1="540" y2="540" style="display: none; stroke:rgb(200,200,200);stroke-width:3" stroke-dasharray="5,5"/>
+      <line class='new' x1="50" x2="250" y1="585" y2="585" style="display: none; stroke:rgb(200,200,200);stroke-width:3" stroke-dasharray="5,5"/>
+      <line class='new' x1="50" x2="250" y1="630" y2="630" style="display: none; stroke:rgb(200,200,200);stroke-width:3" stroke-dasharray="5,5"/>
+      <line class='new' x1="50" x2="250" y1="675" y2="675" style="display: none; stroke:rgb(200,200,200);stroke-width:3" stroke-dasharray="5,5"/>
+
+      <rect width="250" height="200" x="25" y="10" style="stroke:rgba(200,200,200,0.5);stroke-width:3px;fill:rgba(0,0,0,0.3)" id="viewport"/>
+      <text x="300" y="520"
+            fill="white"
+            id='load-more'
+            style="display: none; font-size: 50px; font-weight: bold; text-shadow: 5px 5px rgba(0, 0, 0, 0.4)">Load New Elements</text>
+    </svg>
+  </center>
+</script>
+
+<script id='route_example' type='text/x-handlebars'>
+  <h2>
+    {{view.classify}}Route <span class='expr'>&rarr;</span> {{view.classify}}Controller <span class='expr'>&rarr;</span> {{view.resource}}.handlebars
+  </h2>
+</script>
+
+<script id='demo.handlebars' type='text'>
+  {{doge-text soText="evil" suchText="trout"}}
+</script>
+
+<script id='components/doge-text' type='text'>
+  <img src="images/doge.jpg">
+  wow so <b>{{soText}}</b> such <b>{{suchText}}</b>
+</script>
+
+<script id='welcome.handlebars' type='text'>
+  <p>Hello {{name}}!<p>
+</script>
+
+<script id='router.js' type='text'>
+  this.resource('user', {path: '/user'});
+</script>
+
+<script id='not_updated.js' type='text'>
+  this.set('productId', 1234);
+
+  this.get('productId');  // new value
+  $('#product-id').html() // still old value!
+</script>
+
+<script id='coalesce.js' type='text'>
+  this.set('productId', 1);
+  this.set('productId', 2);
+  this.set('productId', 3);
+  this.set('productId', 4);
+
+  // DOM is only updated once!
+</script>
+
+<script id='set_timeout.js' type='text'>
+  setTimeout(function () {
+    // do something later!
+  }, 1);
+</script>
+
+<script id='schedule.js' type='text'>
+  Scheduling:
+    - Is there an Run Loop scheduled?
+       - If yes, add event to it.
+       - If no, `setTimeout(fn, 1);`
+  
+  The Run Loop:
+    - While there are pending events
+      - Execute event
+</script>
+
+<script id='height.js' type='text'>
+  App.PostView = Ember.View.extend({
+    didInsertElement: function() {
+      var h = this.$().height(); // reflow
+      this.$().height(h * 2);    // reflow      
+    }
+  });
+</script>
+
+<script id='schedule_once.js' type='text'>
+  App.PostView = Ember.View.extend({
+    didInsertElement: function() {
+      var element = this.$();
+          h = element.height();
+
+      Ember.run.schedule('afterRender', function() {
+        element.height(h * 2);  
+      });
+    }
+  });
+</script>
+
+<script id='coalesce_self.js' type='text'>
+  App.PostView = Ember.View.extend({
+    showAlert: function() {
+      alert('annoying alert!');
+    },
+
+    didInsertElement: function() {
+      Em.run.scheduleOnce('afterRender', this, 'showAlert');
+      Em.run.scheduleOnce('afterRender', this, 'showAlert');
+    }
+  })
+</script>
+
+<script id='object.js' type='text'>
+  App.User = Ember.Object.extend({});
+
+  var user = App.User.create({ name: 'Evil Trout' });
+
+  console.log(user.get('name')); // Evil Trout
+</script>
+
+<script id='staff.js' type='text'>
+  App.User = Ember.Object.extend({
+    staff: function() {
+      return this.get('moderator') ||
+             this.get('admin');
+    }.property('moderator', 'admin')
+  });
+
+  var user = App.User.create({ moderator: true });
+  console.log(user.get('staff')); // true
+</script>
+
+<script id='macros_extras.js' type='text'>
+  App.User = Ember.Object.extend({
+    validUsername: Ember.computed.match('username',
+                     /^[a-z0-9]+$/),
+    adult: Ember.computed.gte('age', 18),
+    canadian: Ember.computed.equal('country', 'CA'),
+  });
+</script>
+
+<script id='macros_composed.js' type='text'>
+  App.User = Ember.Object.extend({
+    adult: Em.computed.gte('age', 18),
+    canadian: Em.computed.equal('country', 'CA'),
+    canVote: Em.computed.and('adult', 'canadian'),
+  });
+</script>
+
+<script id='macros_array.js' type='text'>
+  App.Project = Ember.Object.extend({
+    openTickets:
+      Em.computed.filterBy('tickets', 'open', true);
+  });
+
+  project = App.Project.create({
+    tickets: [{id: 1, open: true},
+              {id: 2, open: false}]
+  });
+
+  console.log(project.get('openTickets'));
+</script>
+
+<script id='upper_resolver.js' type='text'>
+  App.Resolver = Ember.DefaultResolver.extend({
+    resolveTemplate: function(parsedName) {
+      return this._super(parsedName.toUpperCase());
+    }
+  });
+</script>
+
+<script id='mobile_resolver.js' type='text'>
+  App.Resolver = Ember.DefaultResolver.extend({
+    resolveTemplate: function(parsedName) {
+      var t = this._super(parsedName);
+      if (App.mobileActive) {
+        return this._super('mob_' + parsedName) || t;
+      }
+      return t;
+    }
+  });
+</script>
+
+<script id='cloaking_pseudocode.js' type='text'>
+  - Create a `CloakedView` Instance
+  - Listen for Window Scroll Events:
+    - When off-screen:
+      - Record and fix height of parent view
+      - Detach child instance
+    - When on-screen, re-attach child instance
+</script>
+
+<script id='collection_posts.js' type='text'>
+  <!-- regular version -->
+  {{collection
+    content=posts
+    itemViewClass="Discourse.PostView"}}
+</script>
+
+<script id='cloaked_collection.js' type='text'>
+  <!-- cloaked version -->
+  {{cloaked-collection
+    content=posts
+    cloakView="post"}}
+</script>
+
+
+</html>
+
