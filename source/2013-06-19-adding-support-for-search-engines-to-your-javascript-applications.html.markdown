@@ -3,8 +3,6 @@ title: "Adding Support for Search Engines to your Javascript Applications"
 date: 2013-06-19
 ---
 
-{:javascript: class=javascript}
-
 It's a myth that if you use a client side MVC framework that your application's content cannot
 be indexed by search engines. In fact, [Discourse forums were indexable by Google](https://www.google.ca/search?q=site:meta.discourse.org+javascript) the day we launched.
 
@@ -53,15 +51,17 @@ Javascript.
 This is really easy to do in Ruby on Rails (and probably other frameworks that I'm less familiar with!).
 Your `application.html.erb` can look like this:
 
-    <html>
-      <body>
-        <section id='main'></section>
-        <noscript>
-          <%= yield %>
-        </noscript>
-      </body>
-      ... load your Javascript code here into #main
-    </html>
+```html
+<html>
+  <body>
+    <section id='main'></section>
+    <noscript>
+      <%= yield %>
+    </noscript>
+  </body>
+  ... load your Javascript code here into #main
+</html>
+```
 
 With this approach, if any server side route renders a simple HTML document, it will end up in the `<noscript>`
 tag for indexing. I wouldn't spend much time on what the HTML looks like. It's meant to
@@ -76,19 +76,21 @@ In Rails, you can reuse the same logic for finding your objects, and then
 choose the JSON or HTML rendering path in the end. Here's a simplified version of our
 `user#show` route:
 
-    def show
-      @user = fetch_user_from_params
+```ruby
+def show
+  @user = fetch_user_from_params
 
-      respond_to do |format|
-        format.html do
-          # doing nothing here renders show.html.erb with the basic user HTML in <noscript>
-        end
-
-        format.json do
-          render_json_dump(UserSerializer.new(@user))
-        end
-      end
+  respond_to do |format|
+    format.html do
+      # doing nothing here renders show.html.erb with the basic user HTML in <noscript>
     end
+
+    format.json do
+      render_json_dump(UserSerializer.new(@user))
+    end
+  end
+end
+```
 
 Note that you don't have to implement HTML views for all your routes, just the ones that
 you want to index. The others will just render nothing into `<noscript>`.

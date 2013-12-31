@@ -3,8 +3,6 @@ title: Why Discourse uses Ember.js
 date: 2013-02-10
 ---
 
-{:javascript: class=javascript}
-
 
 This week, I was delighted to finally reveal [Discourse](http://www.discourse.org), the app I've been working on for most of the last year in secrecy with [awesome people](http://blog.discourse.org/2013/02/the-discourse-team/). The launch got a lot of attention - we were featured on Hacker News, Slashdot, Wired, Reddit, Techcrunch and countless other places. Personally I've been floored with the amount of feedback so far. It's going to take quite some time to get through it all!
 
@@ -45,24 +43,28 @@ Congratulations, your code is now spaghetti, your data is strewn out in the DOM 
 
 The Ember.js approach to the above is to have a simple Javascript class that represents a Post.
 
-    Discourse.Post = Ember.Object.extend({
-      liked: false
-    });
+```javascript
+Discourse.Post = Ember.Object.extend({
+  liked: false
+});
 
-    var post = Discourse.Post.create();
+var post = Discourse.Post.create();
+```
 
 You then bind that post to a template, and the template can have simple logic like:
 
-  	<div class='toolbar'>
-  	  {{#unless liked}}
-  	    <button {{action likePost this}}>Like this Post</button>
-  	  {{/unless}}
-  	</div>
-  	<footer>
-  	  {{#if liked}}
-  	    You liked the post! <a href='#' {{action undoLike this}}>Undo like</a>
-  	  {{/if}}
-  	</footer>
+```handlebars
+<div class='toolbar'>
+  {{#unless liked}}
+    <button {{action likePost this}}>Like this Post</button>
+  {{/unless}}
+</div>
+<footer>
+  {{#if liked}}
+    You liked the post! <a href='#' {{action undoLike this}}>Undo like</a>
+  {{/if}}
+</footer>
+```
 
 Thanks to the binding, if you ever change the 'liked' attribute, it knows to re-render the HTML for you. There's no need to call a render method. You don't have to worry about traversing the DOM to get at the data you need. A front end developer can change the template around and things will continue to work just fine.
 

@@ -10,12 +10,12 @@
 
     <div id="discourse-comments"></div>
     <script type="text/javascript">
-      var discourseUrl = "http://localhost:3000/",
-          discourseEmbedCode = '<%= current_page.date.to_s %>';
+      var discourseUrl = "http://fishtank.eviltrout.com/",
+          discourseEmbedUrl = 'http://fishtank.eviltrout.com<%= current_page.url %>';
 
       (function() {
         var d = document.createElement('script'); d.type = 'text/javascript'; d.async = true;
-        d.src = discourseUrl + '/assets/embed.js';
+        d.src = discourseUrl + 'assets/embed.js';
         (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(d);
       })();
     </script>

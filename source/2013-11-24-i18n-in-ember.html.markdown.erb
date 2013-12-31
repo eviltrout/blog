@@ -3,8 +3,6 @@ title: "Internationalization Support in Ember.js"
 date: 2013-11-24
 ---
 
-{:javascript: class=javascript}
-
 One thing I'm really proud of is that when we launched Discourse, we had first class Internationalization (i18n) support
 ready to be used. Our first release only English, but thanks to our community we have 18
 localizations of our software in progress! Here's what Discourse looks like in Simplified Chinese:
@@ -32,53 +30,59 @@ Once you've included i18n-js in your project, you will have access to an `I18n` 
 translations with. The first thing you'll need to do is include a `translations.js` file that includes all your translations. Here's
 how a simple one could look:
 
-    I18n.translations = {
-      en: {
-        hello: 'hello',
-        cookieCount: {
-          one: 'You have {{count}} cookie.',
-          other: 'You have {{count}} cookies.'
-        }
-      },
+```javascript
+I18n.translations = {
+  en: {
+    hello: 'hello',
+    cookieCount: {
+      one: 'You have {{count}} cookie.',
+      other: 'You have {{count}} cookies.'
+    }
+  },
 
-      fr: {
-        hello: 'bonjour'
-        cookieCount: {
-          one: 'Vous avez {{count}} biscuit.',
-          other: 'Vous avez {{count}} biscuits.'
-        }
-      }
-    };
+  fr: {
+    hello: 'bonjour'
+    cookieCount: {
+      one: 'Vous avez {{count}} biscuit.',
+      other: 'Vous avez {{count}} biscuits.'
+    }
+  }
+};
+````
 
 And then if you wanted to output a translation you can use the `i18n.t` function:
 
+```javascript
+console.log(I18n.t('hello'));   // outputs hello because the default locale is `en`
 
-    console.log(I18n.t('hello'));   // outputs hello because the default locale is `en`
-
-    I18n.locale = 'fr';
-    console.log(I18n.t('hello'));   // outputs bonjour
+I18n.locale = 'fr';
+console.log(I18n.t('hello'));   // outputs bonjour
+```
 
 In an Ember app though, you'll want to be able to access those translations in your handlebars templates. To do this,
 you'll need to define a helper. You can just copy and paste this code into your app:
 
-    Ember.Handlebars.registerHelper('i18n', function(property, options) {
-      var params = options.hash,
-          self = this;
+```javascript
+Ember.Handlebars.registerHelper('i18n', function(property, options) {
+  var params = options.hash,
+      self = this;
 
-      // Support variable interpolation for our string
-      Object.keys(params).forEach(function (key) {
-        params[key] = Em.Handlebars.get(self, params[key], options);
-      });
+  // Support variable interpolation for our string
+  Object.keys(params).forEach(function (key) {
+    params[key] = Em.Handlebars.get(self, params[key], options);
+  });
 
-      return I18n.t(property, params);
-    });
+  return I18n.t(property, params);
+});
+```
 
 Now your templates are ready to be translated:
 
-    <h1>{{i18n hello}}</h1>
+```html
+<h1>{{i18n hello}}</h1>
 
-    <p>{{i18n cookieCount count=user.cookies.length}}</p>
-
+<p>{{i18n cookieCount count=user.cookies.length}}</p>
+```
 
 Note that the I18n library is smart enough to notice when you supply a parameter named `count` to select the correct
 pluralization for a key. If the user has one cookie it won't add that pesky "s."

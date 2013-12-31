@@ -3,8 +3,6 @@ title: "AngularJS vs Ember"
 date: 2013-06-15
 ---
 
-{:javascript: class=javascript}
-
 Recently I got together with some local developers to discuss client side MVC frameworks. We ended up discussing many of the differences between [AngularJS](http://angularjs.org/) and [Ember](http://emberjs.com/).
 
 [Discourse](http://www.discourse.org/) is an Ember application and has been since the first prototype, so I have a lot of experience with it. However, it became clear during the conversation with my peers that there was a lot about AngularJS I didn't know.
@@ -56,13 +54,15 @@ What isn't clear, especially if you come from a server side MVC background, is _
 
 In an AngularJS controller, you are given an object called `$scope`. Any data you attach to it is rendered in your HTML template:
 
-    function SomeCtrl($scope) {
-      $scope.countries = ['can', 'usa', 'fra', 'jap'];
-      $scope.user = {name: "Evil Trout"};
-      $scope.age = 34;
+```javascript
+function SomeCtrl($scope) {
+  $scope.countries = ['can', 'usa', 'fra', 'jap'];
+  $scope.user = {name: "Evil Trout"};
+  $scope.age = 34;
 
-      // Our template now can render {{age}}, {{user.name}} and a list of countries!
-    }
+  // Our template now can render {{age}}, {{user.name}} and a list of countries!
+}
+```
 
 According to the [AngularJS documentation](http://docs.AngularJS.org/guide/dev_guide.mvc.understanding_model) *any named data* in an AngularJS `$scope` is a model, not just Javascript objects and arrays, but primitives, too! In the above snippet, there are **three** models!
 
@@ -74,25 +74,31 @@ There is a secondary level of data binding, however, that you need if you truly 
 
 In Ember, all models extend the `Ember.Object` base class. When you do this, you gain the ability to declare relationships within and between models. For example:
 
-    App.Room = Ember.Object.extend({
-      area: function() {
-        return this.get('width') * this.get('height');
-      }.property('width', 'height')
-    });
+```javascript
+App.Room = Ember.Object.extend({
+  area: function() {
+    return this.get('width') * this.get('height');
+  }.property('width', 'height')
+});
+```
 
 Here, we've created a model called `Room`. We've declared `area` which is known as a [computed property](http://emberjs.com/guides/object-model/computed-properties/). The `property` syntax you see at the end there tells Ember that the `Room`'s `area` depends on its `width` and `height`.
 
 Creating an instance of this model is easy:
 
-    var room = App.Room.create({width: 10, height: 5});
+```javascript
+var room = App.Room.create({width: 10, height: 5});
+```
 
 Now we can create a template:
 
-    <p>Room:</p>
+```handlebars
+<p>Room:</p>
 
-    <p>{{width}} ft.</p>
-    <p>{{height}} ft.</p>
-    <p>{{area}} sq ft.</p>
+<p>{{width}} ft.</p>
+<p>{{height}} ft.</p>
+<p>{{area}} sq ft.</p>
+```
 
 And Ember would render the attributes correctly. In this case, it's impossible for `area` to be out of sync with `width` and `height`. If either of those two properties change, `area` will be updated automatically.
 
@@ -100,22 +106,26 @@ And Ember would render the attributes correctly. In this case, it's impossible f
 
 Because AngularJS models are regular Javascript objects, AngularJS doesn't have an equivalent to computed properties. However, you can approximate them using functions on your objects:
 
-    var Room = function(args) {
-      this.width = args.width;
-      this.height = args.height;
-    }
+```javascript
+var Room = function(args) {
+  this.width = args.width;
+  this.height = args.height;
+}
 
-    Room.prototype.area = function() {
-      return this.width * this.height;
-    }
+Room.prototype.area = function() {
+  return this.width * this.height;
+}
+```
 
 To access the area of our Room, you have to add a set of parentheses to your `area()` call:
 
-    <p>Room:</p>
+```handlebars
+<p>Room:</p>
 
-    <p>{{width}} ft.</p>
-    <p>{{height}} ft.</p>
-    <p>{{area()}} sq ft.</p>
+<p>{{width}} ft.</p>
+<p>{{height}} ft.</p>
+<p>{{area()}} sq ft.</p>
+```
 
 This illustrates a key difference between Ember and AngularJS. Ember subscribes to the [Uniform Access Principle](http://en.wikipedia.org/wiki/Uniform_access_principle). In an Ember template, regardless of whether you are accessing something that is computed or something that is a primitive, the expression looks the same. In AngularJS, functions have to be specifically demarcated.
 
@@ -129,14 +139,17 @@ a function will just work!
 
 A secondary benefit to using getters and setters is you can chain them safely. Consider the following code:
 
-    console.log(room.inhabitant.name);
+```javascript
+console.log(room.inhabitant.name);
+```
 
 What happens if the `inhabitant` is not present? You'll raise a Javascript error. In the Ember equivalent you'll get `undefined` back, which makes it
 easier to write more resilient code:
 
-    // outputs undefined
-    console.log(room.get('inhabitant.name'));
-
+```javascript
+// outputs undefined
+console.log(room.get('inhabitant.name'));
+```
 
 ### Performance issues
 
@@ -170,11 +183,13 @@ would mean a lot of unnecessary recalculations. Good luck debugging issues if yo
 AngularJS makes it much harder to reuse object instances than Ember does. In an Ember template for example, you can link to another route using the
 `{{linkTo}}` helper:
 
-    <ul>
-    {{#each user in users}}
-      <li>{{linkTo 'users.show' user}}Show {{username}}{{/linkTo}}</li>
-    {{/each}}
-    </ul>
+```handlebars
+<ul>
+{{#each user in users}}
+  <li>{{linkTo 'users.show' user}}Show {{username}}{{/linkTo}}</li>
+{{/each}}
+</ul>
+```
 
 Here, we're looping through a list of users and creating a link to show that particular user. If you hovered over the link, you'd see something like
 /users/show/123 if your routes were set up properly. However, when you click the link, Ember actually passes the *reference to the user* through

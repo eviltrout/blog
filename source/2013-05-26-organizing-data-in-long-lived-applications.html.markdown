@@ -64,9 +64,11 @@ retrieves a list of user objects from the server in JSON and a handlebars templa
 
 In the template, you'd create a link to another route to display the user's details:
 
-    {{#each user in model}}
-       <li>{{#linkTo showUserDetails user}}{{username}}{{/linkTo}} - {{fullName}}</li>
-    {{/each}}
+```handlebars
+{{#each user in model}}
+   <li>{{#linkTo showUserDetails user}}{{username}}{{/linkTo}} - {{fullName}}</li>
+{{/each}}
+```
 
 There is a major difference here between the server and client side approaches. When you link to a user this way
 in Ember.js, the reference to the User object you are displaying is actually passed through to your `showUserDetails`
@@ -112,15 +114,17 @@ Once loaded once, the relationship would be established inside the user object.
 With this approach it would be easy to show a result to a user right away, as well as a message while the
 details are loading:
 
-    <div>Username: {{user.username}}</div>
-    <div>Full Name: {{user.fullName}}</div>
+```handlebars
+<div>Username: {{user.username}}</div>
+<div>Full Name: {{user.fullName}}</div>
 
-    {{#if user.details}}
-      <div>Bio: {{user.details.bio}}</div>
-      <div>Birth Date: {{user.details.birthDate}}</div>
-    {{else}}
-      Loading user details!
-    {{/if}}
+{{#if user.details}}
+  <div>Bio: {{user.details.bio}}</div>
+  <div>Birth Date: {{user.details.birthDate}}</div>
+{{else}}
+  Loading user details!
+{{/if}}
+```
 
 
 ### Thinking Forward: Identity Maps

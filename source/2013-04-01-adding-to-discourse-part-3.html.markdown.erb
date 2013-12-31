@@ -3,8 +3,6 @@ title: "Using Ember.js Part 3: Custom Views"
 date: 2013-04-01
 ---
 
-{:javascript: class=javascript}
-
 <%= partial 'tutorial_series' %>
 
 <section class='update'>
@@ -41,6 +39,7 @@ that looks like this:
 
 <%= image_tag 'posts/edit-category.png', class: 'screenshot', alt: 'Editing a Category' %>
 
+
 The "Hotness" attribute is there to allow the moderators of a site to choose the
 topics they want featured on the "Hot" list. The idea is that categories that have a
 higher hotness will appear more frequently than those with a lower hotness.
@@ -59,7 +58,9 @@ You can embed a view in any handlebars template by using the `{{view}}` markup. 
 we can include a custom control called `Discourse.HotnessView` in our
 [edit_category template](https://github.com/discourse/discourse/blob/master/app/assets/javascripts/discourse/templates/modal/edit_category.js.handlebars):
 
-    {{view Discourse.HotnessView hotness=hotness}}
+```handlebars
+{{view Discourse.HotnessView hotness=hotness}}
+```
 
 The `hotnessBinding` attribute tells Ember that we want to create a
 [binding](http://emberjs.com/guides/object-model/bindings/) between our control and the
@@ -75,10 +76,12 @@ To implement our view, we'll create a file called `hotness_view.js` and put it u
 
 Let's start with something basic:
 
-    Discourse.HotnessView = Discourse.View.extend({
-      classNames: ['hotness-control'],
-      templateName: 'hotness'
-    });
+```javascript
+Discourse.HotnessView = Discourse.View.extend({
+  classNames: ['hotness-control'],
+  templateName: 'hotness'
+});
+```
 
 If we create a view like this, Ember will render the 'hotness' handlebars template
 where we added our `{{view Discourse.HotnessView}}` markup.
@@ -95,17 +98,19 @@ name of `.hotness-control` for styling purposes.
 
 We can now implement a template for our view. Here's how our HTML should look:
 
-    <button value="1">1</button>
-    <button value="2">2</button>
-    <button value="3">3</button>
-    <button value="4">4</button>
-    <button value="5" class="selected">5</button>
-    <button value="6">6</button>
-    <button value="7">7</button>
-    <button value="8">8</button>
-    <button value="9">9</button>
-    <button value="10">10</button>
-    <button value="11">11</button>
+```html
+<button value="1">1</button>
+<button value="2">2</button>
+<button value="3">3</button>
+<button value="4">4</button>
+<button value="5" class="selected">5</button>
+<button value="6">6</button>
+<button value="7">7</button>
+<button value="8">8</button>
+<button value="9">9</button>
+<button value="10">10</button>
+<button value="11">11</button>
+```
 
 The `selected` class will render current hotness button in red.
 
@@ -127,31 +132,35 @@ If you create a method called `render` in your view, Ember will use its result i
 template for rendering. It will be called with a buffer that accepts a `push` call with a
 string value. Here's an example:
 
-    Discourse.HelloView = Discourse.View.extend({
-      render: function (buffer) {
-        buffer.push('hello');
-        buffer.push(' eviltrout');
-      }
-    });
+```javascript
+Discourse.HelloView = Discourse.View.extend({
+  render: function (buffer) {
+    buffer.push('hello');
+    buffer.push(' eviltrout');
+  }
+});
+```
 
 If you embedded it using `{{view Discourse.HelloView}}` you'd see "hello eviltrout"
 instead of a handlebars template.
 
 Let's use this render method to create our buttons, adding the selected class where necessary:
 
-    Discourse.HotnessView = Discourse.View.extend({
-      classNames: ['hotness-control'],
+```javascript
+Discourse.HotnessView = Discourse.View.extend({
+  classNames: ['hotness-control'],
 
-      render: function(buffer) {
-        for (var i=1; i<12; i++) {
-          buffer.push("<button value='" + i + "'");
-          if (this.get('hotness') === i) {
-            buffer.push(" class='selected'");
-          }
-          buffer.push(">" + i + "</button>");
-        }
+  render: function(buffer) {
+    for (var i=1; i<12; i++) {
+      buffer.push("<button value='" + i + "'");
+      if (this.get('hotness') === i) {
+        buffer.push(" class='selected'");
       }
-    });
+      buffer.push(">" + i + "</button>");
+    }
+  }
+});
+```
 
 And now if we reload our page, we'll see our hotness control! The correct button
 will be highlighted thanks to a comparison with the `hotness` property of the view,
@@ -171,8 +180,10 @@ The second is you have to remember to escape user supplied values yourself to av
 XSS issues. You can do this by including the handlebars escape function and calling
 it (thanks [@krisselden](https://twitter.com/krisselden)):
 
-    var escape = Handlebars.Utils.escapeExpression;
-    buffer.push(escape(user_value));
+```javascript
+var escape = Handlebars.Utils.escapeExpression;
+buffer.push(escape(user_value));
+```
 
 The third is that **your bound properties wont automatically update**. Consider this:
 what would happen if you changed the `hotness` property within your category
@@ -182,9 +193,11 @@ makes Ember a pleasure to work with.
 
 There's a way around this. We can add the following method to  `Discourse.HotnessView`:
 
-    hotnessChanged: function() {
-      this.rerender();
-    }.observes('hotness')
+```javascript
+hotnessChanged: function() {
+  this.rerender();
+}.observes('hotness')
+```
 
 The `hotnessChanged` method is now set up as an [observer](http://emberjs.com/guides/object-model/observers/)
 on the `hotness` property of the view. Whenever the `hotness` property changes,
@@ -216,9 +229,11 @@ property when the user clicks on a new number. The other powerful aspect of Embe
 views is they [expose user events](http://emberjs.com/guides/views/handling-events/) that you
 can deal with in a clean and elegant way. For example, we can define a `click` method like so:
 
-    click: function(e) {
-      console.log("The view was clicked! Here's the jQuery event:" + e);
-    }
+```javascript
+click: function(e) {
+  console.log("The view was clicked! Here's the jQuery event:" + e);
+}
+```
 
 It will be called whenever the user clicks on the view. If you've ever written jQuery code
 to handle events you should feel right at home.
@@ -231,20 +246,21 @@ for avoiding programmer errors that leak memory.
 As you can see, the click method is called with a reference to the jQuery event of what was
 clicked on. We can use this to figure out what button the user clicked like so:
 
-    click: function(e) {
+```javascript
+click: function(e) {
 
-      var $target = $(e.target);
+  var $target = $(e.target);
 
-      // Return if something in the View was clicked on that wasn't a button
-      if (!$target.is('button')) return;
+  // Return if something in the View was clicked on that wasn't a button
+  if (!$target.is('button')) return;
 
-      // Set our hotness value to the value of the button
-      this.set('hotness', parseInt($target.val(), 10));
+  // Set our hotness value to the value of the button
+  this.set('hotness', parseInt($target.val(), 10));
 
-      // Don't bubble up any more events
-      return false;
-    }
-
+  // Don't bubble up any more events
+  return false;
+}
+```
 
 ### And we're done!
 

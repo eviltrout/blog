@@ -3,8 +3,6 @@ title: Generating IIFEs in Rails
 date: 2013-02-25
 ---
 
-{:ruby: class=ruby}
-
 Recently we ported Discourse from
 [CoffeeScript to plain old Javascript](http://meta.discourse.org/t/is-it-better-for-discourse-to-use-javascript-or-coffeescript/3153).
 The process was straightforward since CoffeeScript spits out fairly good Javascript, although I did have to spend the better part of
@@ -23,21 +21,24 @@ wants to know how it's done.
 
 First, create a class, for example `lib/generate_iife.rb`
 
-    class GenerateIIFE < Sprockets::Processor
+```ruby
+class GenerateIIFE < Sprockets::Processor
 
-      # Add a IIFE around our javascript
-      def evaluate(context, locals)
-        "(function () {\n\n#{data}\n\n})(this);"
-      end
+  # Add a IIFE around our javascript
+  def evaluate(context, locals)
+    "(function () {\n\n#{data}\n\n})(this);"
+  end
 
-    end
+end
+```
 
 Then all you have to do is create an initializer to activate it, for example `config/initializers/enable_iifes.rb`
 
-    require 'generate_iife'
+```ruby
+require 'generate_iife'
 
-    Rails.application.assets.register_preprocessor('application/javascript', GenerateIIFE)
-
+Rails.application.assets.register_preprocessor('application/javascript', GenerateIIFE)
+```
 
 And then you're good to go! Any Javascript file you load via the asset pipeline will have the IIFE surrounding its content.
 
