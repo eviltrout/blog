@@ -8,6 +8,7 @@
 ._.DS_Store
 .sass-cache
 .bundle
+eviltrout.sublime-workspace
 
 build
 deploy
