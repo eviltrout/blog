@@ -3,8 +3,6 @@ title: "Ember RC5 Upgrade Notes"
 date: 2013-06-09
 ---
 
-{:javascript: class=javascript}
-
 Recently, the Ember.JS team released two release candidates in succession. First came RC4 with a bunch of improvements
 and functionality, but it included a couple of performance regressions. It was promptly fixed with
 [Release Candidate 5](http://emberjs.com/blog/2013/06/01/ember-1-0-rc5.html).
@@ -41,14 +39,14 @@ The issue with this is the views we were creating were not wired up properly. Th
 correctly establishing the link between the new child view and the parent view. The solution is relatively simple. When
 creating child views, use the `createChildView` method:
 
+```javascript
+// old way: var btn = Discourse.LoginButton.create({topic: topic});
 
-    // old way: var btn = Discourse.LoginButton.create({topic: topic});
+// new, correct way:
+var btn = this.createChildView(Discourse.LoginButton, {topic: topic});
 
-    // new, correct way:
-    var btn = this.createChildView(Discourse.LoginButton, {topic: topic});
-
-    this.pushObject(btn);
-
+this.pushObject(btn);
+```
 
 ### Initializing State in `didInsertElement`
 

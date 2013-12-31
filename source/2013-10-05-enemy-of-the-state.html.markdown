@@ -23,9 +23,11 @@ scope of data not being what you'd expect.
 
 ActiveRecord makes it easy to retrieve a rows from database and represent them as objects:
 
-    Product.all.each do |p|
-      puts p.name
-    end
+```ruby
+Product.all.each do |p|
+  puts p.name
+end
+```
 
 We didn't have to specify that we wanted the `name` column from the database before we
 outputted it; by default ActiveRecord includes all the columns in the table.
@@ -48,9 +50,11 @@ can add up quite a bit.
 ActiveRecord provides a method called `select` that can be used choose the columns
 returned from the database. We could write something like this:
 
-    Product.select([:id, :name]).each do |p|
-      puts p.name
-    end
+```ruby
+Product.select([:id, :name]).each do |p|
+  puts p.name
+end
+```
 
 This will certainly execute faster than the `Products.all` query above. However, if
 you do this, you are **exposing yourself to many bugs due to inconsistent state**.
@@ -63,13 +67,15 @@ there.
 To illustrate this, imagine you have a function that returns a product's name,
 but adds an asterisk if it's on sale:
 
-    def fancy_product_title(product)
-      if product.on_sale?
-        return product.name + "*"
-      else
-        return product.name
-      end
-    end
+```ruby
+def fancy_product_title(product)
+  if product.on_sale?
+    return product.name + "*"
+  else
+    return product.name
+  end
+end
+```
 
 In this case, our method checks the `on_sale` column in the database to determine
 whether to append the asterisk. However, if you retrieved the `Product` using

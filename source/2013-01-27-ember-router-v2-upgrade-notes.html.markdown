@@ -3,8 +3,6 @@ title: Ember Router v2 Upgrade Notes
 date: 2013-01-27
 ---
 
-{:javascript: class=javascript}
-
 
 I've been working on an [Ember](http://emberjs.com/) project for a while now. When I started, Ember had no official router (although you could plug in the SproutCore one) so I ended up rolling my own with a bunch of Javascript regular expressions. Since then they've released a great router, and more recently a [huge overhaul to it](http://emberjs.com/guides/routing/).
 
@@ -24,38 +22,42 @@ The route `tweets.trending` would be the resource named tweets and the route und
 
 When you link to resources, even if they are declared in a map hierarchy, you start with the last resource name. So that means that even you have a router like this:
 
-    this.resource('admin', {path: '/admin'}, function() {
-      this.resource('users', {path: '/users'}, function() {
-        this.route('active', {path: '/active'});
-      });
-    });
-{:javascript:}
+```javascript
+this.resource('admin', {path: '/admin'}, function() {
+  this.resource('users', {path: '/users'}, function() {
+    this.route('active', {path: '/active'});
+  });
+});
+```
+
 
 The path to the your active users in admin is `users.active`, and not `admin.users.active` as I expected.
 
 A corollary to this is your resource names have to be unique. So you can't have something like this:
 
-    this.resource('admin', {path: '/admin'}, function() {
-      this.resource('users', {path: '/users'}, function() {
-        this.route('active', {path: '/active'});
-      });
-    });
-    this.resource('users', {path: '/users'}, function() {
-      this.route('active', {path: '/active'});
-    });
-{:javascript:}
+```javascript
+this.resource('admin', {path: '/admin'}, function() {
+  this.resource('users', {path: '/users'}, function() {
+    this.route('active', {path: '/active'});
+  });
+});
+this.resource('users', {path: '/users'}, function() {
+  this.route('active', {path: '/active'});
+});
+```
 
 The better way to define these routes would be like this:
 
-    this.resource('admin', {path: '/admin'}, function() {
-      this.resource('adminUsers', {path: '/users'}, function() {
-        this.route('active', {path: '/active'});
-      });
-    });
-    this.resource('users', {path: '/users'}, function() {
-      this.route('active', {path: '/active'});
-    });
-{:javascript:}
+```javascript
+this.resource('admin', {path: '/admin'}, function() {
+  this.resource('adminUsers', {path: '/users'}, function() {
+    this.route('active', {path: '/active'});
+  });
+});
+this.resource('users', {path: '/users'}, function() {
+  this.route('active', {path: '/active'});
+});
+```
 
 That way, you'll have an `adminUsers.active` route name and a `users.active` route name.
 

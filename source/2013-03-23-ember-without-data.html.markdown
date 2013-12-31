@@ -3,9 +3,6 @@ title: "Ember without Ember Data"
 date: 2013-03-23
 ---
 
-{:javascript: class=javascript}
-
-
 [Ember Data](https://github.com/emberjs/data) is a persistence layer for [Ember.Js](http://emberjs.com/).
 Unlike Ember, which currently has a candidate for a 1.0 release, Ember Data is still very much
 a work in progress. This has been a source of confusion for people who are learning Ember, as the two
@@ -29,30 +26,36 @@ works very well for a data model.
 
 Here's what a class might look like to represent a link from [reddit](http://www.reddit.com/):
 
-    App.RedditLink = Ember.Object.extend({});
-
+```javascript
+App.RedditLink = Ember.Object.extend({});
+```
 
 You could then easily instantiate it and use getters and setters to access its properties:
 
-    var link = App.RedditLink.create();
-    link.set('url', 'http://eviltrout.com');
-    console.log(link.get('url')); // http://eviltrout.com
-
+```javascript
+var link = App.RedditLink.create();
+link.set('url', 'http://eviltrout.com');
+console.log(link.get('url')); // http://eviltrout.com
+```
 
 If you like, when you construct your model instance, you can pass it a regular Javascript object
 with the properties rather than setting them one at a time:
 
-    var discourseLink = App.RedditLink.create({
-      title: "Discourse",
-      url: "http://www.discourse.org"
-    });
+```javascript
+var discourseLink = App.RedditLink.create({
+  title: "Discourse",
+  url: "http://www.discourse.org"
+});
 
-    console.log(discourseLink.get('title')); // Discourse
+console.log(discourseLink.get('title')); // Discourse
+```
 
 Here's how you'd bind those properties to a handlebars template:
 
-    Title: {{title}}
-    Url: {{url}}
+```handlebars
+Title: {{title}}
+Url: {{url}}
+```
 
 Once bound to a template like this, if you called `set` on your model, it would automatically update
 the HTML.
@@ -64,21 +67,23 @@ Data models are a lot more exciting when you fill them real data. Let's write a 
 links from a subreddit. Reddit provides a [JSONP](http://en.wikipedia.org/wiki/JSONP) API that we can
 access via jQuery:
 
-    $.getJSON("http://www.reddit.com/r/" + subreddit + "/.json?jsonp=?", function(response) {
-      // response contains the JSON result
-    });
-
+```javascript
+$.getJSON("http://www.reddit.com/r/" + subreddit + "/.json?jsonp=?", function(response) {
+  // response contains the JSON result
+});
+```
 
 The response from reddit's API includes the colleciton of links under `data.children`, but their
 properties are under an additional `data` attribute. We can loop through them like so, creating
 instances of `RedditLink` as we go:
 
-    var links = Em.A();
-    response.data.children.forEach(function (child) {
-      links.pushObject(App.RedditLink.create(child.data));
-    });
-    // links now contains all our `RedditLink` objects!
-
+```javascript
+var links = Em.A();
+response.data.children.forEach(function (child) {
+  links.pushObject(App.RedditLink.create(child.data));
+});
+// links now contains all our `RedditLink` objects!
+```
 
 `$.getJSON` is an asynchronous call. It follows that our model's finder method will have to
 be asynchronous as well. One common approach to dealing with this is to pass a callback function to
@@ -100,27 +105,31 @@ passed through to the next function in the chain once it is complete.
 jQuery conveniently return promises from all its AJAX calls, so we can just make use of it. Here's
 how our finder looks, returning a promise:
 
-    App.RedditLink.reopenClass({
+```javascript
+App.RedditLink.reopenClass({
 
-      findAll: function(subreddit) {
-        return $.getJSON("http://www.reddit.com/r/" + subreddit + "/.json?jsonp=?").then(
-          function(response) {
-            return response.data.children.map(function (child) {
-              return App.RedditLink.create(child.data);
-            });
-          }
-        );
+  findAll: function(subreddit) {
+    return $.getJSON("http://www.reddit.com/r/" + subreddit + "/.json?jsonp=?").then(
+      function(response) {
+        return response.data.children.map(function (child) {
+          return App.RedditLink.create(child.data);
+        });
       }
+    );
+  }
 
-    });
+});
+```
 
 Notice that we're returning the result of `$.getJSON`, but also calling `then` on it. This means that the
 Promise that our `findAll` method returns will eventually resolve to our list of `RedditLink` objects.
 Here's how you could you could call it and log the results from the subreddit [/r/aww](http://www.reddit.com/r/aww):
 
-    App.RedditLink.findAll('aww').then(function (links) {
-      console.log(links); // logs the array of links after it loads
-    });
+```javascript
+App.RedditLink.findAll('aww').then(function (links) {
+  console.log(links); // logs the array of links after it loads
+});
+```
 
 ### Putting it all together
 

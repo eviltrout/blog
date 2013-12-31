@@ -5,8 +5,6 @@ date: 2013-02-27
 
 <%= partial 'tutorial_series' %>
 
-{:javascript: class=javascript}
-
 I've heard from a lot of people in the process of learning [EmberJS](http://emberjs.com/guides/getting-started/core-concepts/)
 that there's quite a jump from the [Getting Started](http://emberjs.com/guides/getting-started/core-concepts/) guide to actually
 contributing to a project like [Discourse](http://www.discourse.org/). I thought it might be useful to step through the creation
@@ -43,20 +41,22 @@ Rails portion of this feature is implemented. Let's establish that if we make an
 `/admin/reports/visits.json` we'll get back a JSON response with the report data to be rendered in the
 following format:
 
-    {
-      "report": {
-        "type": "visits",
-        "title": "Users Visits by Day",
-        "xaxis": "Day",
-        "yaxis": "Users",
-        "data": [
-          {"x": "2013-02-01", "y": 7},
-          {"x": "2013-02-02", "y": 13},
-          {"x": "2013-02-03", "y": 15},
-          ...
-        ]
-      }
-    }
+```json
+{
+  "report": {
+    "type": "visits",
+    "title": "Users Visits by Day",
+    "xaxis": "Day",
+    "yaxis": "Users",
+    "data": [
+      {"x": "2013-02-01", "y": 7},
+      {"x": "2013-02-02", "y": 13},
+      {"x": "2013-02-03", "y": 15},
+      ...
+    ]
+  }
+}
+```
 
 (If curious to see how the server side component was implemented, you may
 [view the source on github](https://github.com/discourse/discourse/blob/master/app/controllers/admin/reports_controller.rb).)
@@ -73,7 +73,9 @@ file we'll need to edit is `routes/admin_routes.js`. Let's add a resource with a
 [dynamic segment](http://emberjs.com/guides/routing/specifying-a-routes-model/) to match the URL we came up with.
 We'll place the following line inside the `admin` resource declaration.
 
-    this.resource('adminReports', { path: '/reports/:type' });
+```javascript
+this.resource('adminReports', { path: '/reports/:type' });
+```
 
 What does the above do? Our EmberJS application now knows that whenever a user navigates to `/admin/reports/visits`,
 it needs to invoke the part of the application we've called `adminReports` to handle the request. There is a little
@@ -91,18 +93,22 @@ that we'll fill in later with some data.
 
 Let's create a file in `admin/routes` called `admin_reports_route.js` and place the following content into it:
 
-    Discourse.AdminReportsRoute = Discourse.Route.extend({
-      renderTemplate: function() {
-        this.render('admin/templates/reports', {into: 'admin/templates/admin'});
-      }
-    });
+```javascript
+Discourse.AdminReportsRoute = Discourse.Route.extend({
+  renderTemplate: function() {
+    this.render('admin/templates/reports', {into: 'admin/templates/admin'});
+  }
+});
+```
 
 This tells Ember to render the template called `admin/templates/report` *into* our main admin template.
 Why *into*? Every view in our admin section has a simple menu up top that we want to display.
 We want our template to be rendered *inside* the template with the menu so the user doesn't
 get lost. We'll start by definining a  placeholder template in the file: `admin/templates/reports.js.handlebars`:
 
-    <h1>This will display our report!</h1>
+```html
+<h1>This will display our report!</h1>
+```
 
 Now when we navigate to `/admin/reports/active`, we see this:
 
@@ -118,18 +124,22 @@ Our feature would be a lot more exciting if it contacted the server to get some 
 define a `Report` model. In Discourse, models are simple classes. Let's create a file, `admin/models/report.js`
 and create a basic model:
 
-    Discourse.Report = Discourse.Model.extend({});
+```javascript
+Discourse.Report = Discourse.Model.extend({});
+```
 
 Discourse uses plain old jQuery AJAX calls to communicate with the server. Let's add an AJAX call to find
 a report by type. We can use Ember's `reopenClass` to add a `find` class method:
 
-    Discourse.Report.reopenClass({
-      find: function(type) {
-        return jQuery.ajax("/admin/reports/" + type, { type: 'GET' }.then(function(result) {
-          return Discourse.Report.create(json.report);
-        }));
-      }
-    });
+```javascript
+Discourse.Report.reopenClass({
+  find: function(type) {
+    return jQuery.ajax("/admin/reports/" + type, { type: 'GET' }.then(function(result) {
+      return Discourse.Report.create(json.report);
+    }));
+  }
+});
+```
 
 This find method makes an AJAX call to `/admin/reports/:type` on the server side and places the resulting
 data into an instance of `Discourse.Report`. Note that since AJAX is asynchronous, the find call will
@@ -138,15 +148,17 @@ return a promise immediately and the report object will be created only when it 
 Let's now tell our Route to load the model when a user navigates to it. This can be done by
 implementing the `model` method. Here's our new `admin_reports_route.js`:
 
-    Discourse.AdminReportsRoute = Discourse.Route.extend({
-      model: function(params) {
-        return Discourse.Report.find(params.type);
-      },
+```javascript
+Discourse.AdminReportsRoute = Discourse.Route.extend({
+  model: function(params) {
+    return Discourse.Report.find(params.type);
+  },
 
-      renderTemplate: function() {
-        this.render('admin/templates/reports', {into: 'admin/templates/admin'});
-      }
-    });
+  renderTemplate: function() {
+    this.render('admin/templates/reports', {into: 'admin/templates/admin'});
+  }
+});
+```
 
 When the `model` method is defined, Ember will call it when the route is entered to retrieve the model
 and automatically make it available in our template.
@@ -155,21 +167,23 @@ and automatically make it available in our template.
 
 Let's add a simple HTML table to display the results in `admin/templates/reports.js.handlebars`:
 
-    <h3>{{title}}</h3>
+```handlebars
+<h3>{{title}}</h3>
 
-    <table class='table'>
-      <tr>
-        <th>{{xaxis}}</th>
-        <th>{{yaxis}}</th>
-      </tr>
+<table class='table'>
+  <tr>
+    <th>{{xaxis}}</th>
+    <th>{{yaxis}}</th>
+  </tr>
 
-      {{#each data}}
-        <tr>
-          <td>{{x}}</td>
-          <td>{{y}}</td>
-        </tr>
-      {{/each}}
-    </table>
+  {{#each data}}
+    <tr>
+      <td>{{x}}</td>
+      <td>{{y}}</td>
+    </tr>
+  {{/each}}
+</table>
+```
 
 Ember uses [Handlebars](http://handlebarsjs.com/) to render its templates. The really cool thing
 about this is if the properties you've put into your template change, Ember is smart enough
