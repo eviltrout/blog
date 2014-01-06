@@ -6,7 +6,24 @@
 
     <div class='contents'>
       <%= yield %>
+      <div style='clear: both'></div>
     </div>
+
+
+    <% if previous_article || next_article %>
+      <section class='article-navigation'>
+
+      <% if previous_article %>
+        <div class='prev'>&laquo; <a href="<%= previous_article.url %>"><%= previous_article.title %></a></div>
+      <% end %>
+
+      <% if next_article %>
+        <div class='next'><a href="<%= next_article.url %>"><%= next_article.title %></a> &raquo;</div>
+      <% end %>
+
+      <div style='clear: both'></div>
+      </section>
+    <% end %>
 
     <div id="discourse-comments"></div>
     <script type="text/javascript">

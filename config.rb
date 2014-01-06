@@ -35,3 +35,25 @@ configure :build do
 end
 
 
+helpers do
+
+  def current_index
+    @current_index ||= blog.articles.index(current_article)
+  end
+
+  def previous_article
+    return @previous_article if @previous_article
+
+    if current_index && ((current_index + 1) < blog.articles.size)
+      @previous_article = blog.articles[current_index+1]
+    end
+  end
+
+  def next_article
+    return @next_article if @next_article
+
+    if current_index && (current_index - 1) >= 0
+      @next_article = blog.articles[current_index-1]
+    end
+  end
+end

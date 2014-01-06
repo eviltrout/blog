@@ -1,0 +1,6 @@
+<h2>Complete Post Archives</h2>
+
+<% blog.articles.each do |article| %>
+  <h3><a href="<%= article.url %>"><%= article.title %></a></h3>
+  <small><%= article.date.strftime('%b %e %Y') %></small>
+<% end %>
