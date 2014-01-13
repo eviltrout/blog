@@ -16,3 +16,13 @@
   <h3><a href="<%= article.url %>"><%= article.title %></a></h3>
   <small><%= article.date.strftime('%b %e %Y') %></small>
 <% end %>
+
+<script type="text/javascript">
+  var discourseUrl = "<% if development? %>http://localhost:3000/<% else %>http://fishtank.eviltrout.com/<% end %>";
+
+  (function() {
+    var d = document.createElement('script'); d.type = 'text/javascript'; d.async = true;
+    d.src = discourseUrl + 'javascripts/count.js';
+    (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(d);
+  })();
+</script>
