@@ -57,3 +57,13 @@ helpers do
     end
   end
 end
+
+module Middleman::Blog::BlogArticle
+  def absolute_url(development)
+    if development
+      "http://localhost:4567#{url}"
+    else
+      "http://eviltrout.com#{url}"
+    end
+  end
+end
