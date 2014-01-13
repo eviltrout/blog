@@ -21,7 +21,7 @@ scope of data not being what you'd expect.
 ### An Example: ActiveRecord
 
 
-ActiveRecord makes it easy to retrieve a rows from database and represent them as objects:
+ActiveRecord makes it easy to retrieve all rows from database and represent them as objects:
 
 ```ruby
 Product.all.each do |p|
