@@ -28,8 +28,7 @@
     <div id="discourse-comments"></div>
     <script type="text/javascript">
       var discourseUrl = "<% if development? %>http://localhost:3000/<% else %>http://fishtank.eviltrout.com/<% end %>",
-          discourseEmbedUrl = 'http://eviltrout.com<%= current_page.url %>';
-
+          discourseEmbedUrl = "<% if development? %>http://localhost:4567<% else %>http://eviltrout.com<% end %><%= current_page.url %>";
       (function() {
         var d = document.createElement('script'); d.type = 'text/javascript'; d.async = true;
         d.src = discourseUrl + 'javascripts/embed.js';

@@ -38,9 +38,12 @@ to do this. If you have ruby on your computer, you can even do it via a [command
 
    ![Embedding Settings](/images/embed-settings.png)
 
-4. In your blog template, paste in the following snippet of Javascript:
+4. In your blog template, paste in the following snippet of Javascript and a `<div>` tag for where you'd like
+   the comments to appear:
 
    ```html
+    <div id="discourse-comments"></div>
+
     <script type="text/javascript">
       var discourseUrl = "http://fishtank.eviltrout.com/",
           discourseEmbedUrl = 'http://eviltrout.com/link-to-blog-entry.html';
