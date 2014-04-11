@@ -3,6 +3,10 @@
   <h1><a href="<%= article.absolute_url(development?) %>"><%= article.title %></a></h1>
   <small><%= article.date.strftime('%b %e %Y') %></small>
   <div class='contents'><%= article.body %></div>
+  <div class='training'>
+    I'm in New York City offering Ember.js training with Erik Bryn on May 22 &amp; 23. <a href='http://nyc-ember-training.erikbryn.com/'>Learn more!</a>
+  </div>
+
 
   <a href="<%= article.absolute_url(development?) %>#discourse-comments">View the full article to comment on it</a>
 </article>
