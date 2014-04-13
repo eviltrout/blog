@@ -1,0 +1,67 @@
+==================================================================
+https://keybase.io/eviltrout
+--------------------------------------------------------------------
+
+I hereby claim:
+
+  * I am an admin of http://eviltrout.com
+  * I am eviltrout (https://keybase.io/eviltrout) on keybase.
+  * I have a public key with fingerprint 0519 4970 7036 48F4 15D9  A027 E36C C570 ECC5 EE24
+
+To claim this, I am signing this object:
+
+{
+    "body": {
+        "key": {
+            "fingerprint": "05194970703648f415d9a027e36cc570ecc5ee24",
+            "host": "keybase.io",
+            "key_id": "e36cc570ecc5ee24",
+            "uid": "466f73e769694ce2e35e8fe255b42300",
+            "username": "eviltrout"
+        },
+        "service": {
+            "hostname": "eviltrout.com",
+            "protocol": "http:"
+        },
+        "type": "web_service_binding",
+        "version": 1
+    },
+    "ctime": 1397425052,
+    "expire_in": 157680000,
+    "prev": "ad7c66cc16412fc8204286b7471216673c89b809bfaae3ed5003af95b0ef2d2c",
+    "seqno": 3,
+    "tag": "signature"
+}
+
+with the aforementioned key, yielding the PGP signature:
+
+-----BEGIN PGP MESSAGE-----
+Version: Keybase OpenPGP v0.1.5
+Comment: https://keybase.io/crypto
+
+yMHtAnicbZFbSBRtGMd3PeZa4k1gRWZvGoW2zPmwGlaSEpYhSWVG28zsOzrturPN
+zm7Jpl7ohV50+r4MobzwK+si7USkqXiILQTDkpBsM1Y0OxFY6SdGYb4jdRPNxfsy
+/+f3/z/vwxNcEWmymBPiktMLhju2mgf7ZnymffmRlwNAVB0VwBYATrh0yYq7FGoe
+TXHrwAYwGucpnsVYjGQoTqZw2sELGMFCkpEkmsUgOiEkKJABylSv4UAxouCFVkVF
+GvqxKw6k/oX3LRUohpFZErIMz/CUBAlI0pCTIUHTIkWQGGaAXqi5hXJoxPgVl66p
+Ph1UZgAk+xUJyYGl3n8iVkktR26PpuqqpLpQqUzXPTbDqVd4DPQEFO2/Quyi4nag
+yZHBDzWvorqBDUekpCtGKk7yLEXQGE1kAHjSo2jQrhgEzTIchj6jDfSjSMHBSgwa
+FWconJAljsAogmNElmJxAmcYlpQ4XuQwXpQFAZLQQWMYKcg8LWJQJhyEhPp74XG3
+CmwkeqZQiiK9Sqlb0H0aBJUP+w5HmcwWU0x0hLE7kyUu8fdGd4/FLthuBsKdF89m
+JrYfZJIP3Kr2vXh+bP2/46e27F8WTqtK/d4wCiezuuN7516NlR1ZLsTPtunccPvg
+wOTY3N36zcVHe7ih1gvFQ+HmDeeDKTmeTzcaHzjX6FV7pnKDH7ddf53UaKupb4h5
+mm0dbdr5X1H5nU1RhXt7/H5Xdur4fGfeupXpu2oSC1o6z1Dh3JEuta2kubB39aom
+smLhyef2hNZrdZaRvNjp8On+2vscF1n07f+4e86E26HRiIWZl7WhlEv4lY787p85
+TnDuzdDb7VNfv5h3pOHB/h/vQgNM0vvZzOjpiY1Zj6pbPniulgw3/zP/2PusbsLu
+ylw7PWJtPdQVmlgEvU8aKA==
+=emkz
+-----END PGP MESSAGE-----
+
+And finally, I am proving ownership of this host by posting or
+appending to this document.
+
+View my publicly-auditable identity here: https://keybase.io/eviltrout
+
+==================================================================
+
+
