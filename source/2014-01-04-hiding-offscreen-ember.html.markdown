@@ -59,7 +59,7 @@ of posts with a special helper. So instead of rendering a collection of Posts
 like so:
 
 ```handlebars
-{{collection content=topic.posts itemViewClass="Discourse.PostView"}}
+{{collection content=topic.posts itemViewClass="postView"}}
 ```
 
 We can drop in a replacement like so:

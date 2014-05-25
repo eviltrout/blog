@@ -3,6 +3,13 @@ title: "Adding Support for Search Engines to your Javascript Applications"
 date: 2013-06-19
 ---
 
+**Important Update (May 25, 2014)**: Google has started parsing and indexing Javascript. The approach of this article is to use
+`<noscript>` tags but Google will likely ignore those now. We upgraded our site to sniff Google and other popular
+search engines and serve our simple content that way. However, in the future it might not be a concern as Google
+plan on having Javascript sites *just work!*
+
+---
+
 It's a myth that if you use a client side MVC framework that your application's content cannot
 be indexed by search engines. In fact, [Discourse forums were indexable by Google](https://www.google.ca/search?q=site:meta.discourse.org+javascript) the day we launched.
 

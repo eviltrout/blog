@@ -44,11 +44,11 @@ Congratulations, your code is now spaghetti, your data is strewn out in the DOM 
 The Ember.js approach to the above is to have a simple Javascript class that represents a Post.
 
 ```javascript
-Discourse.Post = Ember.Object.extend({
+var Post = Ember.Object.extend({
   liked: false
 });
 
-var post = Discourse.Post.create();
+var p = Post.create();
 ```
 
 You then bind that post to a template, and the template can have simple logic like:
@@ -56,12 +56,12 @@ You then bind that post to a template, and the template can have simple logic li
 ```handlebars
 <div class='toolbar'>
   {{#unless liked}}
-    <button {{action likePost this}}>Like this Post</button>
+    <button {{action like}}>Like this Post</button>
   {{/unless}}
 </div>
 <footer>
   {{#if liked}}
-    You liked the post! <a href='#' {{action undoLike this}}>Undo like</a>
+    You liked the post! <a href='#' {{action undoLike}}>Undo like</a>
   {{/if}}
 </footer>
 ```

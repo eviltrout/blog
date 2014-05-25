@@ -78,7 +78,7 @@ properties are under an additional `data` attribute. We can loop through them li
 instances of `RedditLink` as we go:
 
 ```javascript
-var links = Em.A();
+var links = [];
 response.data.children.forEach(function (child) {
   links.pushObject(App.RedditLink.create(child.data));
 });

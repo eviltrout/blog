@@ -75,7 +75,7 @@ There is a secondary level of data binding, however, that you need if you truly 
 In Ember, all models extend the `Ember.Object` base class. When you do this, you gain the ability to declare relationships within and between models. For example:
 
 ```javascript
-App.Room = Ember.Object.extend({
+var Room = Ember.Object.extend({
   area: function() {
     return this.get('width') * this.get('height');
   }.property('width', 'height')
@@ -87,7 +87,7 @@ Here, we've created a model called `Room`. We've declared `area` which is known 
 Creating an instance of this model is easy:
 
 ```javascript
-var room = App.Room.create({width: 10, height: 5});
+var room = Room.create({width: 10, height: 5});
 ```
 
 Now we can create a template:

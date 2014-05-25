@@ -36,7 +36,7 @@ they allow you to create a function that transforms one or more properties into 
 In this case, you could make one like this:
 
 ```javascript
-App.Creature = Ember.Object.extend({
+var Creature = Ember.Object.extend({
 
   purplePeopleEater: function() {
     return (this.get('eyes.length') === 1) &&
@@ -61,7 +61,7 @@ the `Ember.computed` set of functions. They are shortcuts for creating common ty
 some examples:
 
 ```javascript
-App.Creature = Ember.Object.extend({
+var Creature = Ember.Object.extend({
   eyesBlue: Ember.computed.equal('eyes', 'blue'),
 
   hasTwoBananas: Ember.computed.gte('bananas.length', 2),
@@ -82,7 +82,7 @@ prone. Here's how I might re-write the `purplePeopleEater` property by breaking 
 macros:
 
 ```javascript
-App.Creature = Ember.Object.extend({
+var Creature = Ember.Object.extend({
   oneEyed: Ember.computed.equal('eyes.length', 1),
   oneHorned: Ember.computed.equal('horns.length', 1),
   purple: Ember.computed.equal('color', 'purple'),
