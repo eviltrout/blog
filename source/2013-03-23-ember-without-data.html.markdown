@@ -3,6 +3,15 @@ title: "Ember without Ember Data"
 date: 2013-03-23
 ---
 
+### Update May 26, 2014
+
+The concepts in this article are still true, but I've recorded a [screencast](https://www.youtube.com/watch?v=7twifrxOTQY)
+showing how to use ember without ember data using ember-cli and the latest version of Ember.
+It goes beyond the contents of this article, showing how to create an adapter, store and
+even your own identity map. **[Check it out](https://www.youtube.com/watch?v=7twifrxOTQY)**!
+
+---
+
 [Ember Data](https://github.com/emberjs/data) is a persistence layer for [Ember.Js](http://emberjs.com/).
 Unlike Ember, which currently has a candidate for a 1.0 release, Ember Data is still very much
 a work in progress. This has been a source of confusion for people who are learning Ember, as the two
@@ -78,9 +87,8 @@ properties are under an additional `data` attribute. We can loop through them li
 instances of `RedditLink` as we go:
 
 ```javascript
-var links = [];
-response.data.children.forEach(function (child) {
-  links.pushObject(App.RedditLink.create(child.data));
+var links = response.data.children.map(function (child) {
+  return App.RedditLink.create(child.data);
 });
 // links now contains all our `RedditLink` objects!
 ```
@@ -133,21 +141,12 @@ App.RedditLink.findAll('aww').then(function (links) {
 
 ### Putting it all together
 
-I've created a [github project](https://github.com/eviltrout/emberreddit/) that puts all the code from this
-blog entry together. You can also [try it in your browser](http://emberreddit.eviltrout.com/).
+I've created a [github project](https://github.com/eviltrout/emberreddit-old/) that puts all the code from this
+blog entry together.
 
-The [code for the application](https://github.com/eviltrout/emberreddit/blob/master/js/app.js) is quite
+The [code for the application](https://github.com/eviltrout/emberreddit-old/blob/master/js/app.js) is quite
 short, which I think reflects Ember's greatest strength: as a developer you have to write less code to get
 stuff done.
 
 I implore you to not be scared off by Ember Data's current state. Ember itself is quite stable, and it's
 easy to get started with AJAX calls like this today.
-
-### Update - Jun 30 / 2013
-
-I've updated the code to use Ember 1.0 RC6 and added a bunch more comments. The code is not exactly the
-same as above, but it has a bunch of new features and is still based on the same principles. Download
-it and try it out!
-
-
-
