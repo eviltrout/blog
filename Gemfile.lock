@@ -60,7 +60,10 @@ GEM
     middleman-syntax (2.0.0)
       middleman-core (~> 3.2)
       rouge (~> 1.0)
+    mini_portile (0.5.3)
     multi_json (1.8.4)
+    nokogiri (1.6.1)
+      mini_portile (~> 0.5.0)
     rack (1.5.2)
     rack-test (0.6.2)
       rack (>= 1.0)
@@ -100,4 +103,5 @@ DEPENDENCIES
   middleman (~> 3.2.1)
   middleman-blog (~> 3.5.1)
   middleman-syntax
+  nokogiri
   redcarpet

@@ -134,5 +134,5 @@ format. I'm hoping to merge it into master shortly so our contributors can
 help with the converting efforts.
 
 My advice is to not wait for browsers to implement these modules; start hacking
-today and put your project ahead ot the curve. There are other ES6 features
+today and put your project ahead of the curve. There are other ES6 features
 that can be transpiled too, and I'm excited to try some of those out too!
