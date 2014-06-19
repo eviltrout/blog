@@ -1,0 +1,541 @@
+<!DOCTYPE html>
+<head>
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+
+	<title>Extending Browser Applications</title>
+
+	<meta name="author" content="Robin Ward">
+	<meta name="viewport" content="width=1024, user-scalable=no">
+
+	<!-- Core and extension CSS files -->
+	<link rel="stylesheet" href="stylesheets/deck.core.css">
+
+	<link rel="stylesheet" href="stylesheets/github.css">
+
+	<!-- Style theme. More available in /themes/style/ or create your own. -->
+	<link rel="stylesheet" href="stylesheets/swiss.css">
+
+	<!-- Transition theme. More available in /themes/transition/ or create your own. -->
+	<link rel="stylesheet" href="stylesheets/fade.css">
+
+	<script src="javascripts/modernizr.custom.js"></script>
+
+</head>
+
+<body class="deck-container">
+
+<!-- Begin slides -->
+<section class="slide" id="title-slide">
+  <img src="images/title.png" class='title'>
+</section>
+
+<section class="slide" id="part-one">
+	<h1>Part One: What and Why?</h1>
+</section>
+
+<section class="slide" id="general-idea">
+  <h2>How it Works</h2>
+  <ul>
+    <li>Take someone else's browser application</li>
+    <li>Add features to it</li>
+    <li>Distribute it</li>
+  </ul>
+</section>
+
+<section class="slide" id="res">
+  <h2>Reddit Enhancement Suite</h2>
+  <img src='images/res.png'>
+</section>
+
+<section class="slide" id="res-enabled">
+  <h2>Reddit Enhancement Suite</h2>
+  <img src='images/res-enabled.png'>
+</section>
+
+<section class="slide" id="res-expanded">
+  <h2>Reddit Enhancement Suite</h2>
+  <img src='images/res-expanded.png'>
+</section>
+
+<section class="slide" id="res-code1">
+  <h2>Reddit Enhancement Suite</h2>
+  <img src='images/res-code1.png'>
+</section>
+
+<section class="slide" id="res-code2">
+  <h2>Reddit Enhancement Suite</h2>
+  <img src='images/res-code2.png'>
+</section>
+
+<section class='slide' id='programming'>
+  <h2>The RES Way</h2>
+  <img src="images/programming.gif" style='width: 500px;'>
+</section>
+
+<section class="slide" id="downsides">
+  <h2>How it Works</h2>
+  <ul>
+    <li>CSS Selectors by class and id</li>
+    <li>Tests `location.href` to determine URL</li>
+    <li>If Reddit's markup changes, RES Breaks :(</li>
+  </ul>
+</section>
+
+<section class="slide" id="what-if">
+  <h2>What If...</h2>
+  <ul>
+    <li>...we didn't have to depend on selectors?</li>
+    <li>...the application was built using, say, an <em>ambitious web framework?</em></li>
+    <li>...we just call the JS code directly?</li>
+  </ul>
+</section>
+
+<section class="slide" id="example">
+  <h2>Example</h2>
+
+  <img src='images/discourse.png'>
+</section>
+
+<section class="slide" id="positive">
+  <h2>Positive Side-Effect</h2>
+
+  <ul>
+    <li>We didn't design Discourse to do this, we got it free!</li>
+    <li>That's <strong>two</strong> APIs that an Ember.js application gives you free!</li>
+    <li>Do you expose your server side API? Why not expose the client side one too!</li>
+  </ul>
+</section>
+
+<section class="slide" id="caveat">
+  <h2>Caveat</h2>
+
+  <ul>
+    <li>If the client side API changes, your extension can break.</li>
+    <li>Anecdotally this happens a LOT less than with jQuery selectors.</li>
+    <li>...I bet the RES guys wish Reddit was written this way!</li>
+  </ul>
+</section>
+
+<section class="slide" id="part-two">
+  <h1>Part Two: How?</h1>
+</section>
+
+<section class="slide" id="object-model">
+  <h2>Use Ember's Object Model</h2>
+
+<pre>
+// Use `reopen` to add a new property to `App.User`
+App.User.reopen({
+  screamName: function() {
+    return this.get('name').toUpperCase() + "!";
+  }.property('name')
+});
+
+var fish = App.User.create({ name: 'Evil Trout' });
+console.log(fish.get('screamName'));
+// EVIL TROUT!
+</pre>
+
+</section>
+
+<section class="slide" id="es6-note">
+  <h2>A Note about ES6 Modules</h2>
+
+  <ul>
+    <li>New Ember applications should be using ES6 modules and transpilation.</li>
+    <li>In ES6 modules, `App.User` won't be accessible by default.</li>
+    <li>How can we access the class to extend it?</li>
+  </ul>
+</section>
+
+<section class='slide' id='initializers'>
+  <h2>Initializers</h2>
+  <ul>
+    <li>Usually you want to extend an Application before it boots.</li>
+    <li>Ember has a great way to register code to execute as Applications
+    boot up</li>
+  </ul>
+</section>
+
+<section class='slide' id='initializers-continued'>
+  <h2>Initializers</h2>
+  <ul>
+    <li>Can have as many as you want</li>
+    <li>Can specify `after` to tell an initializer to load after another.</li>
+    <li>Ember will handle the dependencies!</li>
+  </ul>
+</section>
+
+<section class="slide" id="initializer-example">
+  <h2>Example</h2>
+
+<pre>
+export default {
+  name: 'augment-user',
+  initialize: function(container, app) {
+    var User = container.lookupFactory('model:user');
+
+    User.reopen({ ... });
+  }
+}
+</pre>
+</section>
+
+<section class='slide' id='wtf-container'>
+  <h2>Container? WTF was that?</h2>
+  <ul>
+    <li>The container is the structure Ember uses to manage all the objects and classes
+        it uses.</li>
+    <li>You can query it for stuff!</li>
+    <li>`lookup` finds instances for you.</li>
+    <li>`lookupFactory` finds classes for you.</li>
+  </ul>
+</section>
+
+<section class="slide" id="container-example">
+  <h2>Container Example</h2>
+
+<pre>
+// Finds the currently instantiated Topic controller
+container.lookup('controller:topic');
+
+// Finds the class used to instantiate a model
+container.lookupFactory('model:user');
+</pre>
+</section>
+
+<section class='slide' id='resolver'>
+  <h2>The Resolver</h2>
+  <ul>
+    <li>How does Ember know what to return from `topic:controller`?</li>
+    <li>The Resolver is used by the Container to translate a string into an object</li>
+    <li>You can supply your own Resolver</li>
+  </ul>
+</section>
+
+<section class='slide' id='why-resolver'>
+  <h2>Why is this cool?</h2>
+  <ul>
+    <li>Any time someone asks for X, you can give them Y instead!</li>
+    <li>It's a great way to extend applications!</li>
+    <li>You can plug in your own components as needed</li>
+  </ul>
+</section>
+
+<section class="slide" id="resolver-example">
+  <h2>Creating a Custom Resolver</h2>
+
+<pre>
+var AwesomeResolver = Ember.DefaultResolver.extend({
+  resolveTemplate: function(parsedName) {
+    var awesomeName = "awesome/" +
+      parsedName.fullNameWithoutType;
+
+    return Ember.TEMPLATES[awesomeName] ||
+      this.super(parsedName);
+  }
+});
+
+// Wire it up
+var App = Ember.Application.extend({
+  Resolver: AwesomeResolver
+});
+</pre>
+</section>
+
+<section class='slide' id='spider-man'>
+  <h2>Spider-Man!</h2>
+  <img src='images/spider-man.png'>
+</section>
+
+<section class='slide' id='spider-man-2'>
+  <h2>With great power...</h2>
+  <ul>
+    <li>Just because you can swap any component out doesn't mean you <strong>should</strong></li>
+    <li>Be very careful doing this, do it sparingly and think of compatibility.</li>
+    <li>Try to add new components, but fall back on old ones if they do not exist.</li>
+  </ul>
+</section>
+
+<section class='slide' id='template-faults'>
+  <h2>Template Downsides</h2>
+  <ul>
+    <li>Replacing the entire template is often too much. What if you only want to add
+        one little thing?</li>
+        <li>Some Discourse contributors came up with some novel approaches</li>
+  </ul>
+</section>
+
+<section class='slide' id='haql'>
+  <h2>HAQL</h2>
+<pre>
+var patcher = Ember.TemplatePatcher;
+
+patcher.add("061dd3942f735486fbc91b5c7dfcf7a6",
+  function(ast, hash, str) {
+    var toInject = "&lt;p&gt;hello world&lt;/p&gt;";
+    patcher.insertAt(ast, "if if if-else if[2]",
+      toInject, {"shift": 1});
+  });
+</pre>
+</section>
+
+<section class='slide' id='haql-2'>
+  <h2>HAQL</h2>
+  <ul>
+    <li>Proposed by Discourse user lightyear</li>
+    <li>Actually works! Used in a couple of plugins.</li>
+    <li>Ultimately we decided it was too complicated.</li>
+  </ul>
+</section>
+
+<section class='slide' id='container-view'>
+  <h2>Another approach: Ember.ContainerView</h2>
+  <ul>
+    <li>A native Ember View class</li>
+    <li>A container view can contain as many views as you want.</li>
+    <li>The views can all use different types.</li>
+  </ul>
+</section>
+
+<section class='slide' id='container-view-example'>
+  <h2>ContainerView Example</h2>
+<pre>
+// post.hbs
+&lt;h1&gt;{{title}}&lt;/h1&gt;
+{{view 'post-after-title'}}
+
+// post-after-title.js
+export default Em.ContainerView.extend();
+</pre>
+</section>
+
+<section class='slide' id='container-view-append'>
+  <h2>To Append to it</h2>
+<pre>
+container.lookupFactory('view:post-after-title').reopen({
+  addMyView: function() {
+    this.pushObject(Em.View.create({
+      templateName: 'my-template'
+    }));
+  }.on('didInsertElement')
+});
+</pre>
+</section>
+
+<section class='slide' id='containerview-flaws'>
+  <h2>About this approach</h2>
+  <ul>
+    <li>Multiple plugins can insert markup safely</li>
+    <li>It's a lot of boilerplate (well, by Ember standards!)</li>
+    <li>Could it be made more generic?</li>
+  </ul>
+</section>
+
+<section class='slide' id='plugin-outlet'>
+  <h2>Idea: {{plugin-outlet}}</h2>
+  <ul>
+    <li>Supply it with an outlet name</li>
+    <li>Context should be the same as the outer template</li>
+    <li>Wire up templates automatically?</li>
+  </ul>
+</section>
+
+<section class='slide' id='plugin-outlet-example'>
+  <h2>{{plugin-outlet}} Example</h2>
+<pre>
+// post.hbs
+{{plugin-outlet 'post-after-title}}
+
+// templates/connectors/post-after-title/add-byline.hbs
+By: {{author}}
+</pre>
+</section>
+
+<section class='slide' id='good-news'>
+  <h2>{{plugin-outlet}}</h2>
+  <img src='images/good-news.jpg'>
+</section>
+
+<section class='slide' id='discourse-outlet'>
+  <h2>{{plugin-outlet}}</h2>
+  <ul>
+    <li>We added this to Discourse and it works great!</li>
+    <li>In use in several plugins already.</li>
+    <li>Can also supply a custom view name instead of a template.</li>
+    <li>The full source code for the helper is <a href="https://github.com/discourse/discourse/blob/master/app/assets/javascripts/discourse/helpers/plugin-outlet.js.es6">on Discourse's github</a></li>
+  </ul>
+</section>
+
+<section class='slide' id='application-events'>
+  <h2>Communication between Views</h2>
+  <ul>
+    <li>Problem: How can a view in an Ember application communicate with another view?</li>
+  </ul>
+</section>
+
+<section class='slide' id='views'>
+  <h2>Communication between Views</h2>
+  <img src="images/views.png">
+</section>
+
+<section class='slide' id='ember-way-1'>
+  <h2>The Ember Way?</h2>
+  <img src="images/classes-1.png">
+</section>
+
+<section class='slide' id='ember-way-2'>
+  <h2>The Ember Way?</h2>
+  <img src="images/classes-2.png">
+</section>
+
+<section class='slide' id='ember-way-3'>
+  <h2>The Ember Way?</h2>
+  <img src="images/classes-3.png">
+</section>
+
+<section class='slide' id='ember-way-4'>
+  <h2>The Ember Way?</h2>
+  <img src="images/classes-4.png">
+</section>
+
+<section class='slide' id='ron-swanson'>
+  <h2>The Ember Way?</h2>
+  <img src="images/ron-swanson-computer.gif" style='width: 500px;'>
+</section>
+
+<section class='slide' id='application-events'>
+  <h2>A different solution</h2>
+  <ul>
+    <li>What if we could broadcast events within our app and things could listen for them?</li>
+    <li>We could broadcast a `composerResized` event!</li>
+  </ul>
+</section>
+
+<section class='slide' id='ember-evented'>
+  <h2>Ember.Evented</h2>
+<pre>
+var doughBoy = Ember.Object.create(Ember.Evented);
+
+doughBoy.on('poke', function() {
+  console.log('hehe!');
+});
+
+doughBoy.trigger('poke');
+</pre>
+</section>
+
+<section class='slide' id='depedency-injection'>
+  <h2>Dependecy Injection</h2>
+  <ul>
+    <li>Who says it's just for Angular?!?</li>
+    <li>We can inject `Ember.Evented` for Application-Wide Events</li>
+  </ul>
+</section>
+
+<section class='slide' id='di-example'>
+  <h2>Application Events</h2>
+<pre>
+app.register('app-events:main',
+             Ember.Object.extend(Ember.Evented),
+             { singleton: true });
+
+app.inject('controller', 'appEvents', 'app-events:main');
+app.inject('route', 'appEvents', 'app-events:main');
+app.inject('view', 'appEvents', 'app-events:main');
+app.inject('model', 'appEvents', 'app-events:main');
+</pre>
+</section>
+
+<section class='slide' id='app-events-example'>
+  <h2>Application Events</h2>
+<pre>
+// views/composer.js
+this.appEvents.trigger('composerResized');
+
+// views/progress-bar.js
+var self = this;
+this.appEvents.on('composerResized', function() {
+  self.reposition();
+});
+</pre>
+</section>
+
+<section class='slide' id='app-events-caveats'>
+  <h2>Application Events Downsides</h2>
+  <ul>
+    <li>This is going against Ember's guard rails a little.</li>
+    <li>Use sparringly!</li>
+    <li>If you're doing it a lot, consider why?</li>
+  </ul>
+</section>
+
+<section class='slide' id='conclusion'>
+  <h2>In Conclusion</h2>
+  <ul>
+    <li>This is just the tip of the iceberg for extending live Ember apps</li>
+    <li>Consider offering a client side API for your project!</li>
+    <li>Most of this stuff was easy because Ember is such an awesome framework</li>
+  </ul>
+</section>
+
+<section class='slide' id='conclusion'>
+  <h2>Thanks!</h2>
+  <ul>
+    <li>Follow me at @eviltrout</li>
+    <li>Read my blog at <a href='http://eviltrout.com'>eviltrout.com</a></li>
+    <li>Or don't, you're capable of making your own decisions and don't have to
+        listen to me!</li>
+  </ul>
+</section>
+
+
+
+
+
+
+<!-- Grab CDN jQuery, with a protocol relative URL; fall back to local if offline -->
+<script>window.jQuery || document.write('<script src="javascripts/jquery-1.8.2.js"><\/script>')</script>
+
+<!-- Deck Core and extensions -->
+<script src="javascripts/deck.core.js"></script>
+<script src="javascripts/deck.hash.js"></script>
+<script src="javascripts/deck.scale.js"></script>
+<script src="javascripts/highlight.pack.js"></script>
+
+
+<!-- Initialize the deck -->
+<script>
+$(function() {
+	$.deck('.slide');
+});
+
+$(document).ready(function() {
+  $('pre').each(function(i, e) {hljs.highlightBlock(e)});
+});
+</script>
+
+<style type="text/css">
+body {
+    overflow:hidden !important;
+}
+
+img {
+  max-height: 70%;
+}
+img.title {
+  max-height: 100%;
+}
+
+ul > li {
+  font-size: 150% !important;
+}
+
+.hljs-keyword {
+  font-weight: bold !important;
+}
+</style>
+
+</body>
+</html>
