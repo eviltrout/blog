@@ -26,11 +26,14 @@
 
     <div id="discourse-comments"></div>
     <script type="text/javascript">
-      var discourseUrl = "<% if development? %>http://localhost:3000/<% else %>http://fishtank.eviltrout.com/<% end %>",
-          discourseEmbedUrl = "<% if development? %>http://localhost:4567<% else %>http://eviltrout.com<% end %><%= current_page.url %>";
+      DiscourseEmbed = {
+        discourseUrl: "<% if development? %>http://localhost:3000/<% else %>http://fishtank.eviltrout.com/<% end %>",
+        discourseEmbedUrl: "<% if development? %>http://localhost:4567<% else %>http://eviltrout.com<% end %><%= current_page.url %>"
+      };
+
       (function() {
         var d = document.createElement('script'); d.type = 'text/javascript'; d.async = true;
-        d.src = discourseUrl + 'javascripts/embed.js';
+        d.src = DiscourseEmbed.discourseUrl + 'javascripts/embed.js';
         (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(d);
       })();
     </script>
