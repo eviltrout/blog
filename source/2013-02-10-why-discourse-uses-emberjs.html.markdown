@@ -87,7 +87,7 @@ Despite the hundreds of retweets, you should be aware that it's mostly FUD.
 
 - Generating the HTML string is something that has to happen. And he's not wrong, it is slower than just getting the HTML from the server. In particular, on low powered devices you will notice that rendering is slower than regular HTML. However, I'd offer two rebuttals to this: 1) Javascript and devices are only going to get faster in the future -- the latest iPad renders discourse very smoothly -- and 2) It can often be faster even with slow rendering to send much less data across the wire. Consider a table view with many controls on each row. Why send the html for all those buttons across the wire for every row? You can send the basic row data and the renderer decorate it.
 
-The truth is, Discourse is fast. Try it out yourself. And our Javascript payloads [work really well with CDNs](http://eviltrout.com/2013/01/06/turbolinks-and-the-prague-effect.html). Try it from somewhere not in North America. I think you might be surprised how fast client side MVC can be.
+The truth is, Discourse is fast. Try it out yourself. And our Javascript payloads [work really well with CDNs](https://eviltrout.com/2013/01/06/turbolinks-and-the-prague-effect.html). Try it from somewhere not in North America. I think you might be surprised how fast client side MVC can be.
 
 
 ### API-First Development

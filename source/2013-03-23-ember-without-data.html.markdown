@@ -43,8 +43,8 @@ You could then easily instantiate it and use getters and setters to access its p
 
 ```javascript
 var link = App.RedditLink.create();
-link.set('url', 'http://eviltrout.com');
-console.log(link.get('url')); // http://eviltrout.com
+link.set('url', 'https://eviltrout.com');
+console.log(link.get('url')); // https://eviltrout.com
 ```
 
 If you like, when you construct your model instance, you can pass it a regular Javascript object

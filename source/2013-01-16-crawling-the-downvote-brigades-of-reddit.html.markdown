@@ -85,7 +85,7 @@ I collected data on 198 links over a period of 48 hours. Here's what I found:
 
 ### The Data
 
-- You can download a [SQL dump of the dataset](http://eviltrout.com/sql/brigade.sql.gz). 
+- You can download a [SQL dump of the dataset](https://eviltrout.com/sql/brigade.sql.gz). 
 
 - Here's the [source code for the crawler](https://github.com/eviltrout/brigade).
 

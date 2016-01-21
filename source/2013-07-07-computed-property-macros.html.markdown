@@ -31,7 +31,7 @@ aggregating them anyway. It will make your life a lot easier.
 
 Ember gives you a great tool out of the box to do this easily called
 [computed properties](http://emberjs.com/guides/object-model/computed-properties/). I've
-[written](http://eviltrout.com/2013/06/15/ember-vs-angular.html) about them before, but in a nutshell
+[written](https://eviltrout.com/2013/06/15/ember-vs-angular.html) about them before, but in a nutshell
 they allow you to create a function that transforms one or more properties into another single property.
 In this case, you could make one like this:
 

@@ -3,7 +3,7 @@ title: "Building Emberredit (screencast)"
 date: 2014-05-29
 ---
 
-One of my more popular blog entries is on [using Ember.js without Ember Data](http://eviltrout.com/2013/03/23/ember-without-data.html).
+One of my more popular blog entries is on [using Ember.js without Ember Data](https://eviltrout.com/2013/03/23/ember-without-data.html).
 Recently I've been going through my old entries and making sure they don't have any glaring mistakes,
 and I realized this would be a good opportunity to convert my [emberreddit](https://github.com/eviltrout/emberreddit)
 project to [ember-cli](http://iamstef.net/ember-cli/).

@@ -3,7 +3,7 @@ title: "Watch: Ember at 10 feet"
 date: 2014-12-22
 ---
 
-Previously I [posted notes and links](http://eviltrout.com/2014/11/17/ember-tv.html) for my talk about "Ember at 10 feet" from the
+Previously I [posted notes and links](https://eviltrout.com/2014/11/17/ember-tv.html) for my talk about "Ember at 10 feet" from the
 [Embergarten Saturday Symposium](https://unspace.ca/embergarten/).
 
 Today my awesome friends at [Unspace](https://unspace.ca/) posted a video of the talk, which you can watch below:

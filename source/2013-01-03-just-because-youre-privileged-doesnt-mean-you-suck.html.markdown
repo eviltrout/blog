@@ -3,7 +3,7 @@ title: Just because you're privileged doesn't mean you suck
 date: 2013-01-03
 ---
 
-Recently, I wrote a short essay on [privilege and programming](http://eviltrout.com/2012/12/30/programming-since-i-was-seven.html). It was quite popular on [/r/programming](http://www.reddit.com/r/programming/comments/15ojq6/ive_been_programming_since_i_was_7/) and generated hundreds of comments, both there and on this blog. 
+Recently, I wrote a short essay on [privilege and programming](https://eviltrout.com/2012/12/30/programming-since-i-was-seven.html). It was quite popular on [/r/programming](http://www.reddit.com/r/programming/comments/15ojq6/ive_been_programming_since_i_was_7/) and generated hundreds of comments, both there and on this blog. 
 
 I was surprised and flattered to see the majority of the comments agreed with my post, however a few people brought up a concern which I'd like to address:
 

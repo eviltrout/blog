@@ -27,10 +27,10 @@ set :images_dir, 'images'
 # Build-specific configuration
 configure :build do
 
-  activate :asset_host
-  set :asset_host do |asset|
-    "http://cdn.eviltrout.com"
-  end
+  # activate :asset_host
+  # set :asset_host do |asset|
+  #   "http://cdn.eviltrout.com"
+  # end
 
 end
 
@@ -63,7 +63,7 @@ module Middleman::Blog::BlogArticle
     if development
       "http://localhost:4567#{url}"
     else
-      "http://eviltrout.com#{url}"
+      "https://eviltrout.com#{url}"
     end
   end
 end

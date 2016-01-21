@@ -99,7 +99,7 @@ I'm not suggesting that the URL contain *every* possible interaction a
 user can make; if you do that you will end up with a huge headache and
 a meaningless URL. Instead, you should focus on the most important things a
 user will want to see when the page is refreshed. For example, on Discourse
-we [maintain a user's scroll position](http://eviltrout.com/2013/02/16/infinite-scrolling-that-works.html)
+we [maintain a user's scroll position](https://eviltrout.com/2013/02/16/infinite-scrolling-that-works.html)
 in a topic by changing the URL as they scroll.
 
 Going forward, I'm going to make sure that all my applications handle refreshing

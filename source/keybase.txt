@@ -4,7 +4,7 @@ https://keybase.io/eviltrout
 
 I hereby claim:
 
-  * I am an admin of http://eviltrout.com
+  * I am an admin of https://eviltrout.com
   * I am eviltrout (https://keybase.io/eviltrout) on keybase.
   * I have a public key with fingerprint 0519 4970 7036 48F4 15D9  A027 E36C C570 ECC5 EE24
 
