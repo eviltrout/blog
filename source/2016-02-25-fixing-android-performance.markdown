@@ -25,7 +25,7 @@ After years of waiting for a breakthrough in Android or Ember performance, we de
 nuclear option: we replaced the Ember rendering engine for our most common view with a custom virtual DOM based
 renderer.
 
-The results have been *fantastic*:
+The results have been **fantastic**:
 
 ### Large Topic Rendering Speed (Initial Visit)
 
@@ -215,7 +215,7 @@ click() {
 
 If your action returns a promise, once it is resolved the widget will re-render itself.
 Most of the time the rendering is handled automatically like this for you, but you
-can also trigger a re-render yourself you can always do it yourself by calling `this.queueRerender()`.
+can also trigger a re-render yourself by calling `this.queueRerender()`.
 Renders are queued up and coalesced nicely by leveraging Ember's event loop.
 
 ## Downsides
