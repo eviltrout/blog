@@ -1,0 +1,308 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Speeding up Discourse's Rendering</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <style type="text/css">
+      @import url(/vendor/yan.css);
+      @import url(/vendor/droid.css);
+      @import url(/vendor/ubuntu.css);
+
+      body { font-family: 'Droid Serif'; }
+      h1, h2, h3 {
+        font-family: 'Yanone Kaffeesatz';
+        font-weight: normal;
+      }
+      .remark-code, .remark-inline-code { font-family: 'Ubuntu Mono'; }
+
+      img {
+        width: 40%;
+      }
+
+      img.thx {
+        width: 20%;
+      }
+
+      li {
+        font-size: 1.5em;
+        margin-bottom: 0.5em;
+
+      }
+      li li {
+        font-size: 1em;
+      }
+    </style>
+  </head>
+  <body>
+    <textarea id="source">
+
+class: center, middle
+
+# Speeding up Discourse's Rendering
+## @eviltrout
+## https://eviltrout.com
+---
+class: center, middle
+# April 5th, 2012
+---
+class: center, middle
+# First day full time on Discourse!
+<img src="cake.png">
+---
+class: center, middle
+# 4 years full time with Ember!
+<img src="popper.png">
+---
+class: center, middle
+# Ember Scales
+<img src="chart.png">
+---
+class: center, middle
+# Do you worry about adding new features?
+<img src="thinking.png">
+---
+class: center, middle
+# Of course not, you just do it!
+<img src="smile.png">
+---
+# Discourse v1.5 Client App Stats
+* 43,469 SLOC
+* 133 Controllers
+* 87 Models
+* 144 Components
+---
+class: center, middle
+# "Didn't you say this talk was about performance?"
+<img src="expressionless.png">
+---
+class: center, middle
+# ...
+<img src="angry.png">
+---
+class: center, middle
+# Many people jump to conclusions
+<img src="angry.png">
+---
+# The Details
+* On *one* platform (Android) we had very poor performance
+* We noticed it *years* ago, and despite it Discourse's success continued
+* We made small tweaks such as rendering fewer items that bought us time
+---
+# Efforts to Fix
+* We blogged about it
+* We created the ember-performance suite and render performance tabs on the Ember Inspector
+* We raised issues with v8 and Ember
+---
+class: center, middle
+# Moore's Law?
+<img src="mobile.png">
+---
+class: center, middle
+# Best Android Score
+# 400ms
+### Samsung Galaxy S6 (Sep 2015)
+---
+class: center, middle
+# Best iOS Score
+# 60ms
+### iPhone 6s (Sep 2015)
+---
+class: center, middle
+# Best Android &lt; iPhone from 2012
+<img src="wat.png">
+---
+class: center, middle
+# We got tired of waiting
+<img src="sleep.png">
+---
+# What was slow? The "Hot Path"
+* A post stream is an infinitely scrolling list of posts
+  * A post has a list of 15+ controls
+  * A post has a list of links
+* This could easily be 400+ components to initially render
+  on large topics with more added as you scroll.
+---
+# Under the Hood: The Object Model
+* Each component is an `Ember.Object`
+* `Ember.Object` supports bound data, computed properties and observers
+* These are awesome features (okay maybe not observers) but they come
+  at a cost
+* The more bound data you have, the more work Ember has to
+  do to wire up updates and the slower it goes.
+---
+class: center, middle
+# Discourse World Tour 2015
+<img src="australia.png">
+---
+# Crazy Idea
+* What if we knew our exact data flow and when re-rendering needed to happen?
+* That's where having 4+ years on one project really helps!
+* We could trade flexibility and ease of coding for speed
+---
+# Discourse Widgets
+* A lightweight wrapper on the excellent [virtual-dom](https://github.com/Matt-Esch/virtual-dom) library.
+* Less than 300 LOC
+* Replaces Handlebars templates with ES2015 code
+* Bubbles actions up into Ember
+* Leverages the Ember run loop for coalescing and scheduling updates
+---
+# Major Downside: Uglier and Harder to write
+
+Handlebars
+```handlebars
+<div class='post'>
+  <div class='post-body'>
+    {{post.body}}
+  </div>
+</div>
+```
+
+Discourse Widget
+```javascript
+import { h } from 'virtual-dom';
+
+createWidget('post', {
+  tagName: 'div.post',
+  html(attrs) {
+    return h('div.post-body', attrs.body);
+  }
+});
+```
+---
+# Other Downsides
+* Larger code base than compiled templates
+* Not idiomatic Ember
+* You have to call `this.scheduleRenrender()` sometimes
+* Took 6+ weeks of Development
+---
+class: center, middle
+# Huge Upside: 5x Performance!
+<img src="rocket.png">
+---
+class: center, middle
+# Often 8x faster on Android!
+<img src="rocket.png">
+---
+# Integration
+* Leverages Ember Components
+* A useful way to wrap jQuery or VanillaJS code
+* Also allows us to do whatever we want with the DOM in a sandbox
+---
+# DOM Lifecycle Triggers
+
+```javascript
+export Ember.Component.extend({
+  didInsertElement() {
+    // start up custom rendering using this.element
+  }
+
+  willDestroyElement() {
+    // tear down custom rendering
+  }
+});
+```
+---
+# Integration
+
+Embedding a Discourse Widget:
+
+```handlebars
+{{mount-widget widget="post-gutter" args=links}}
+```
+---
+# Testable
+
+```javascript
+widgetTest("collapsed links", {
+  template: '{{mount-widget widget="post-gutter" args=args}}',
+  setup() {
+    this.set('args', {
+      links: [
+        { title: "Link 1", url: "http://eviltrout.com?1" },
+        { title: "Link 2", url: "http://eviltrout.com?2" },
+        { title: "Link 3", url: "http://eviltrout.com?3" },
+        { title: "Link 4", url: "http://eviltrout.com?4" },
+        { title: "Link 5", url: "http://eviltrout.com?5" },
+        { title: "Link 6", url: "http://eviltrout.com?6" },
+        { title: "Link 7", url: "http://eviltrout.com?7" },
+      ]
+    });
+  },
+  test(assert) {
+    assert.equal(this.$('.post-links a.track-link').length, 5);
+    click('a.toggle-more');
+    andThen(() => {
+      assert.equal(this.$('.post-links a.track-link').length, 7);
+    });
+  }
+});
+```
+---
+# Ember's Future: Glimmer v2.0
+
+* Glimmer 2.0 should benefit Discourse in all the other code
+  that still uses Handlebars (95% of our code base at least)
+
+* Discourse Widgets are in the latest stable Discourse *today*
+
+* I suspect that even if we'd waited for Glimmer 2.0 to land
+  it wouldn't be as fast as our precisely tuned renderer...
+---
+# Mr. Katz Disagrees!
+
+* Yehuda Katz suspects that Glimmer 2.0 can be faster because
+  it is a VM for rendering and can be even smarter about what
+  to rerender than I am.
+
+* Yehuda wants to understand Discourse's hot path to make sure
+  that Glimmer can support it. I'm going to do a deep dive
+  with him soon.
+
+---
+# Being Wrong is Awesome!
+
+* I would *love* to be wrong about this. I would be more than happy
+  to eat crow and go back to Glimmer if it's indeed faster.
+
+* Definitely watch Yehuda Katz and Goddfrey Chan's talk from
+  EmberConf 2016 about rendering when it is posted!
+
+---
+# Should I do what Discourse Did?
+
+* Probably not, unless:
+
+ * Your app is mature and you know exactly how it has to work
+   in its hot path.
+
+ * You have measuredly slow performance on Android and it
+   matters to you
+
+ * You are comfortable spending many weeks re-writing your
+   handlebars templates, likely introducing regressions in the
+   process.
+---
+# Post-Morterm
+
+* It's been a tremendous success for us.
+
+* It has been deployed to all our customers, and now that it's
+  in the stable channel it will be released to many more
+  Discourse installs.
+
+* There are thousands of active Discourse deployments, with
+  millions of users. Android no longer a second class citizen.
+---
+class: center, middle
+# Thanks!
+<img src="thanks.png" class='thx'>
+### Emoji by [EmojiOne](http://emojione.com/)
+    </textarea>
+    <script src="/vendor/remark-latest.min.js">
+    </script>
+    <script>
+      remark.create();
+    </script>
+  </body>
+</html>
+

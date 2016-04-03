@@ -257,3 +257,7 @@ a day looking into this now but couldn't find sufficient documentation or public
 APIs, but I'm told that in the future it's likely we will be able to do this.
 
 Until then, full speed ahead!
+
+**Update:** If you want to learn more about how the Widget framework works,
+[I've written more here](https://meta.discourse.org/t/a-tour-of-how-the-widget-virtual-dom-code-in-discourse-works/40347).
+
