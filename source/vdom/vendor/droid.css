@@ -2,17 +2,17 @@
   font-family: 'Droid Serif';
   font-style: normal;
   font-weight: 400;
-  src: local('Droid Serif'), local('DroidSerif'), url(/vendor/droid1.ttf) format('truetype');
+  src: local('Droid Serif'), local('DroidSerif'), url(/vdom/vendor/droid1.ttf) format('truetype');
 }
 @font-face {
   font-family: 'Droid Serif';
   font-style: normal;
   font-weight: 700;
-  src: local('Droid Serif Bold'), local('DroidSerif-Bold'), url(/vendor/droid2.ttf) format('truetype');
+  src: local('Droid Serif Bold'), local('DroidSerif-Bold'), url(/vdom/vendor/droid2.ttf) format('truetype');
 }
 @font-face {
   font-family: 'Droid Serif';
   font-style: italic;
   font-weight: 400;
-  src: local('Droid Serif Italic'), local('DroidSerif-Italic'), url(/vendor/droid3.ttf) format('truetype');
+  src: local('Droid Serif Italic'), local('DroidSerif-Italic'), url(/vdom/vendor/droid3.ttf) format('truetype');
 }
