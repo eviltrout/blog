@@ -38,7 +38,8 @@
 
 class: center, middle
 
-# Speeding up Discourse's Rendering
+# The Nuclear Option:
+## How we sped up Discourse's Rendering
 ## @eviltrout
 ## https://eviltrout.com
 ---
@@ -86,11 +87,11 @@ class: center, middle
 # The Details
 * On *one* platform (Android) we had very poor performance
 * We noticed it *years* ago, and despite it Discourse's success continued
-* We made small tweaks such as rendering fewer items that bought us time
+* We made small tweaks such as rendering fewer items to buy us time
 ---
 # Efforts to Fix
 * We blogged about it
-* We created the ember-performance suite and render performance tabs on the Ember Inspector
+* We created the [ember-performance](https://github.com/eviltrout/ember-performance) suite and render performance tabs on the Ember Inspector
 * We raised issues with v8 and Ember
 ---
 class: center, middle
@@ -115,12 +116,12 @@ class: center, middle
 # We got tired of waiting
 <img src="sleep.png">
 ---
-# What was slow? The "Hot Path"
+# What was slow? Our "Hot Path"
 * A post stream is an infinitely scrolling list of posts
-  * A post has a list of 15+ controls
+  * A post has a 15+ controls
   * A post has a list of links
 * This could easily be 400+ components to initially render
-  on large topics with more added as you scroll.
+  on large topics with more added as you scroll
 ---
 # Under the Hood: The Object Model
 * Each component is an `Ember.Object`
@@ -128,21 +129,21 @@ class: center, middle
 * These are awesome features (okay maybe not observers) but they come
   at a cost
 * The more bound data you have, the more work Ember has to
-  do to wire up updates and the slower it goes.
+  do to wire up updates and the slower it goes
 ---
 class: center, middle
 # Discourse World Tour 2015
 <img src="australia.png">
 ---
 # Crazy Idea
-* What if we knew our exact data flow and when re-rendering needed to happen?
+* What if we knew our exact data flow and when rerendering needed to happen?
 * That's where having 4+ years on one project really helps!
 * We could trade flexibility and ease of coding for speed
 ---
 # Discourse Widgets
-* A lightweight wrapper on the excellent [virtual-dom](https://github.com/Matt-Esch/virtual-dom) library.
+* A lightweight wrapper on the excellent [virtual-dom](https://github.com/Matt-Esch/virtual-dom) library
 * Less than 300 LOC
-* Replaces Handlebars templates with ES2015 code
+* Replaces Handlebars templates with ES2015 classes
 * Bubbles actions up into Ember
 * Leverages the Ember run loop for coalescing and scheduling updates
 ---
@@ -240,58 +241,59 @@ widgetTest("collapsed links", {
 ---
 # Ember's Future: Glimmer v2.0
 
-* Glimmer 2.0 should benefit Discourse in all the other code
-  that still uses Handlebars (95% of our code base at least)
+* Glimmer 2.0 should benefit Discourse in the majority of our code
+  that still uses Handlebars
 
-* Discourse Widgets are in the latest stable Discourse *today*
+* Discourse Widgets are in the latest stable Discourse *today*.
+  We didn't have to wait for Glimmer 2.0 to be finished
 
-* I suspect that even if we'd waited for Glimmer 2.0 to land
-  it wouldn't be as fast as our precisely tuned renderer...
+* I suspect that even if we'd waited it wouldn't be as fast as our
+  precisely tuned renderer...
 ---
-# Mr. Katz Disagrees!
+# @wycats Disagrees!
 
-* Yehuda Katz suspects that Glimmer 2.0 can be faster because
+* wycats suspects that Glimmer 2.0 can be faster because
   it is a VM for rendering and can be even smarter about what
-  to rerender than I am.
+  to rerender
 
-* Yehuda wants to understand Discourse's hot path to make sure
+* wycats wants to understand Discourse's hot path to make sure
   that Glimmer can support it. I'm going to do a deep dive
-  with him soon.
+  with him soon
 
 ---
 # Being Wrong is Awesome!
 
 * I would *love* to be wrong about this. I would be more than happy
-  to eat crow and go back to Glimmer if it's indeed faster.
+  to eat crow and go back to Glimmer if it's indeed faster
 
 * Definitely watch Yehuda Katz and Goddfrey Chan's talk from
   EmberConf 2016 about rendering when it is posted!
 
 ---
-# Should I do what Discourse Did?
+# Should you do what Discourse Did?
 
 * Probably not, unless:
 
- * Your app is mature and you know exactly how it has to work
-   in its hot path.
+ * Your app is mature, has a hot path, and you know exactly how
+   it needs to work
 
  * You have measuredly slow performance on Android and it
    matters to you
 
  * You are comfortable spending many weeks re-writing your
    handlebars templates, likely introducing regressions in the
-   process.
+   process
 ---
 # Post-Morterm
 
-* It's been a tremendous success for us.
+* The re-write has been a tremendous success for us
 
-* It has been deployed to all our customers, and now that it's
+* It's been deployed to all our customers, and now that it's
   in the stable channel it will be released to many more
-  Discourse installs.
+  Discourse installs
 
 * There are thousands of active Discourse deployments, with
-  millions of users. Android no longer a second class citizen.
+  millions of users. Android is no longer a second class citizen
 ---
 class: center, middle
 # Thanks!
