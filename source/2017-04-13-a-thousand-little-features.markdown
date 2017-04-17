@@ -8,7 +8,7 @@ It's been over a year since I [wrote a blog entry](https://eviltrout.com/2016/02
 I've now been working on Discourse full time for 5 years. In the beginning we had a lot more uncertainty about technical decisions. Some of the things we debated interally include:
 
 - Whether to use Rails or Node.js (We chose Rails)
-- Whether to use an ORM direct SQL (We use ActiveRecord)
+- Whether to use an ORM or direct SQL (We use ActiveRecord)
 - Whether we could get away with a NOSQL database instead of Postgres
 - Whether to do server side rendering or embrace a front end MVC framework (We use Ember.js)
 - Whether to use CoffeeScript/Javascript (Javascript won, now ES2015)
