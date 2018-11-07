@@ -1,0 +1,96 @@
+---
+layout: post
+title: "Internationalization Support in Ember.js"
+date: 2013-11-24
+---
+
+One thing I'm really proud of is that when we launched Discourse, we had first class Internationalization (i18n) support
+ready to be used. Our first release only English, but thanks to our community we have 18
+localizations of our software in progress! Here's what Discourse looks like in Simplified Chinese:
+
+<img src="/images/discourse-chinese.png" class="screenshot" alt="Discourse in Chinese">
+
+<br>
+<br>
+
+On the server side, Discourse uses Rails' built in [i18n support](http://guides.rubyonrails.org/i18n.html). It has been
+around for a long time and works easily so I won't go into that. Check out the documentation for your server side
+framework of choice for more.
+
+### I18n in Ember.js
+
+Our client side application is written in Ember.js, which doesn't have built in support for i18n. However, it's
+not difficult to add it in.
+
+We use [i18n-js](https://github.com/fnando/i18n-js), a project whose goal is to bring Rails translation support to
+Javascript. **Don't worry if you don't use Rails on the server side**. You can use all of the code in this post outside
+of Rails if you like. The [Javascript code in 1i8n-js](https://github.com/fnando/i18n-js/blob/master/app/assets/javascripts/i18n.js)
+is all you'll need.
+
+Once you've included i18n-js in your project, you will have access to an `I18n` object in your javascript code to perform
+translations with. The first thing you'll need to do is include a `translations.js` file that includes all your translations. Here's
+how a simple one could look:
+
+```javascript{% raw %}
+I18n.translations = {
+  en: {
+    hello: 'hello',
+    cookieCount: {
+      one: 'You have {{count}} cookie.',
+      other: 'You have {{count}} cookies. Yum!'
+    }
+  },
+
+  fr: {
+    hello: 'bonjour'
+    cookieCount: {
+      one: 'Vous avez {{count}} biscuit.',
+      other: 'Vous avez {{count}} biscuits. Le Yum!'
+    }
+  }
+};
+{% endraw %}```
+
+And then if you wanted to output a translation you can use the `i18n.t` function:
+
+```javascript
+console.log(I18n.t('hello'));   // outputs hello because the default locale is `en`
+
+I18n.locale = 'fr';
+console.log(I18n.t('hello'));   // outputs bonjour
+```
+
+In an Ember app though, you'll want to be able to access those translations in your handlebars templates. To do this,
+you'll need to define a helper. You can just copy and paste this code into your app:
+
+```javascript
+Ember.Handlebars.registerHelper('i18n', function(property, options) {
+  var params = options.hash,
+      self = this;
+
+  // Support variable interpolation for our string
+  Object.keys(params).forEach(function (key) {
+    params[key] = Em.Handlebars.get(self, params[key], options);
+  });
+
+  return I18n.t(property, params);
+});
+```
+
+Now your templates are ready to be translated:
+
+```html{% raw %}
+<h1>{{i18n hello}}</h1>
+
+<p>{{i18n cookieCount count=user.cookies.length}}</p>
+{% endraw %}```
+
+Note that the I18n library is smart enough to notice when you supply a parameter named `count` to select the correct
+pluralization for a key. If the user has one cookie it won't add that pesky "s."
+
+I18n support is so easy to add that I recommend it for just about every web project unless you're absolutely sure
+you'll never need it in another language. The Internet is a lot bigger than your home country, go forth and make it
+easier to translate!
+
+
+
