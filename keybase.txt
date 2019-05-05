@@ -1,0 +1,82 @@
+==================================================================
+https://keybase.io/eviltrout
+--------------------------------------------------------------------
+
+I hereby claim:
+
+  * I am an admin of https://eviltrout.com
+  * I am eviltrout (https://keybase.io/eviltrout) on keybase.
+  * I have a public key with fingerprint 0519 4970 7036 48F4 15D9  A027 E36C C570 ECC5 EE24
+
+To do so, I am signing this object:
+
+{
+  "body": {
+    "key": {
+      "eldest_kid": "010119a9c86d8cacb7d8df08948ef85fbb106c302f8a90effbc574e8d66d9a1a5aa60a",
+      "fingerprint": "05194970703648f415d9a027e36cc570ecc5ee24",
+      "host": "keybase.io",
+      "key_id": "e36cc570ecc5ee24",
+      "kid": "010119a9c86d8cacb7d8df08948ef85fbb106c302f8a90effbc574e8d66d9a1a5aa60a",
+      "uid": "466f73e769694ce2e35e8fe255b42300",
+      "username": "eviltrout"
+    },
+    "merkle_root": {
+      "ctime": 1557062212,
+      "hash_meta": "e9bcf0a4aa0b5ec24bdb938e088231904f05b8657fb0f34e7f8030c8df492791",
+      "seqno": 5299701
+    },
+    "revoke": {
+      "sig_ids": [
+        "cf27681cca37762ff7f72773635f2c34e1596a24e98cc603b6489a885ca359d90f"
+      ]
+    },
+    "service": {
+      "hostname": "eviltrout.com",
+      "protocol": "https:"
+    },
+    "type": "web_service_binding",
+    "version": 1
+  },
+  "ctime": 1557062247,
+  "expire_in": 157680000,
+  "prev": "016f7e752d2869dfa54999ae6ebeba27bc5e5a1fd86ed5e873adc1c4ef3865da",
+  "seqno": 15,
+  "tag": "signature"
+}
+
+which yields the signature:
+
+-----BEGIN PGP MESSAGE-----
+Version: Keybase OpenPGP v2.1.0
+Comment: https://keybase.io/crypto
+
+yMK/AnicrVNbaBxVGN61UdxorY0oPoSIIxW0MZ45M+e22kq1kICaKiq02GQ5c+Y/
+ybibne3M7DYXV6VGioiilT6Ioalt6AVtwT7UtA9aY6HWiNJWiQpKFeIlhQjeiq2p
+nlkUofjoPJzhnPn+7//+75tzdPGiTHP2qlzb8u4Tkyuy01OD1cz6j77pG7G80B+y
+8iNWERovKPkQJ4Vi4Ft5C9nItoUUilOfK6k85nNfIy5cDpoT7Xk2ospBWHMpEGjt
+KcJc4D6lvpC2JFJSJK12SwflPogqUVBOUlpiC1cwxJBDXa5dmxg0wgwcqgwBArMC
+YNcU9odxWmHEeTKGjiA0Z2ZTaMj7D/z/rLvaoHMp1cwBRgUVrgIMDgGuARPiudhB
+KAXGEJXlAKSqakEpicJqYtXbrQGIiiUoRGGYpO6qJEgxNjGqKcY2NhPKuL8wAIlM
+S4WnNJKulMgjoLDr+Z5wOCDOsWML5GpEPE4J0x7SjgtMc+QgZWZzBWbCNkJi2FAO
+rTzBwhhsGwUR1MIipM3joM/4Flv5Ry2lMaPcVko6jFGsNdMMM+ZQh2isDLNNBJXY
+BcGVosjxTE5Cck5MARG+QNrqqafNolqgGuRpUBcb0KHCASOpEoVJqMKS+dSfJJU4
+nxqTDFVS7EbwCn+zFLyg7Jv/xFTUIIqDsGyMMsiLPHNZuwWDlSCCQpAiiBkEmSft
+A7VG+CYtYAT7mFPha0lcIYQECh54EjOTNRBpa59T8E2QzJG+spUL2jHW+vJfE21i
+dMo+w2msK8ukGoFVnzqyvimTbc5cdukl6QXKNOeu/udaTZcvz2z6cW5b687vn1nR
+8fJzh3e/OF0cG32h7Y5Pu2ZWNR3fO7zmxsVrbp089ufr9dtrF3Ijrz75y1j2wNsL
+hW61dtfNW749sLB98/gfs6UnxFf3bbmy2LXjpH7l6Mer7zwR7bvpcPLmodMTQ79K
+kV1e6/n8YO+plpbzez4ZrT9w9tqTc0eWZd5b9NtjP4zt3fHTubc2zYzPbF3yZW7b
+/Ts/2L719DVd7z802bbuILx0/W2tVyydCFvv/a5r/pHhcxtuKNfOnrGrnbtyU8c7
+Zy8szPbsX/3us6s+HDy08dhd+59/vJXe8+AbvXM/z7cMn2nfvW+l/PrUZ0sf9uar
+X/y+5+7e0c3XLVn7WmfTLSufPv/OumXjE091o78A+2eJgQ==
+=s4dx
+-----END PGP MESSAGE-----
+
+And finally, I am proving ownership of this host by posting or
+appending to this document.
+
+View my publicly-auditable identity here: https://keybase.io/eviltrout
+
+==================================================================
+
