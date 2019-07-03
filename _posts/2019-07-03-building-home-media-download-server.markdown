@@ -27,7 +27,7 @@ The Intel NUC I purchased has a M.2 slot for a SSD, which I highly recommend as 
 
 It does not come with RAM. You probably want 8GB but [16GB would be nicer](https://www.amazon.ca/gp/product/B01HI14AZ4/ref=as_li_tl?ie=UTF8&camp=15121&creative=330641&creativeASIN=B01HI14AZ4&linkCode=as2&tag=eviltrout-20&linkId=4de6aca646d55011846b09fc74ff78f4).
 
-You will want a second hard drive for your media in the NUC's 2.5" slot. My current build has a 2TB drive but if I was building one today I'd throw in a [5TB 2.5" Drive](https://www.amazon.ca/gp/product/B01M0AADIX/ref=as_li_tl?ie=UTF8&camp=15121&creative=330641&creativeASIN=B01M0AADIX&linkCode=as2&tag=eviltrout-20&linkId=b745f96fce63aedb721290672bfa4991). I am not a huge data hoarder so 2TB has lastest me a while but your mileage may vary.
+You will want a second hard drive for your media in the NUC's 2.5" slot. My current build has a 2TB drive but if I was building one today I'd throw in a [5TB 2.5" Drive](https://www.amazon.ca/gp/product/B01M0AADIX/ref=as_li_tl?ie=UTF8&camp=15121&creative=330641&creativeASIN=B01M0AADIX&linkCode=as2&tag=eviltrout-20&linkId=b745f96fce63aedb721290672bfa4991). I am not a huge data hoarder so 2TB has lasted me a while but your mileage may vary.
 
 
 ### Installing the OS and Docker
