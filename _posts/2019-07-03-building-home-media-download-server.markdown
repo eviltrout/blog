@@ -188,7 +188,7 @@ If you want to set up a public samba share, I found a great little image for tha
 Now you're off to the races, any computer on the network can access storage to add/remove files as they like.
 
 
-### Remebering all those ports
+### Remembering all those ports
 
 If you're like me, you'll have trouble remembering all the custom port numbers for your web applications.
 I decided to install [nginx](https://www.nginx.com/) on port 80 so that it would be the default site when I accessed the default port of my media server. On that site I added a simple HTML index page that links to the various services:
