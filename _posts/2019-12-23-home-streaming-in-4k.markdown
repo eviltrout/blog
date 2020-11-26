@@ -130,19 +130,17 @@ With these numbers, not only were all my games playable at 40k@60, but I couldn'
 whatsoever. I'd found my perfect setup. Since then I've put in over a dozen hours of streaming various
 kinds of games and it works like a dream.
 
+#### Moonlight
+
+Update Nov 26, 2020: I've since found that [Moonlight Game Streaming](https://play.google.com/store/apps/details?id=com.limelight&hl=en_CA&gl=US)
+works better than Steam's streaming, and has the benefit of being able to stream games that come from
+other stores than Steam.
+
+I now recommend running nVidia's streaming with Moonlight as a client. It can do 4k@60Hz for any game
+with no noticeable lag.
+
 #### TL;DR
 
 * The best setup for in-home 4K, 60fps game streaming is a gigabit wired ethernet with an nVidia Shield TV
 * Do whatever you can to minimize the ping time between your PC and streaming device
-* Try with HEVC disabled, it can improve performance
-
-#### Extra Notes
-
-* The nVidia Shield TV has its own non-steam streaming app. Out of the box it worked for me but dropped my
-games to 1080p even on a Gigabit network. At this resolution it worked great, but when I forced it up to 4K
-it performed much worse than the Steam app. I'm not sure why this happened and I may investigate this in the future.
-
-* Streaming DirectX 12 games seems to drop the framerate into the 40-50 range from 60. If a game supports both,
-pick DirectX 11. I hope this is fixed in the future as more games will be moving to DirectX 12.
-
-
+* Use nVidia's streaming to Moonlight.
