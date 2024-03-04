@@ -28,7 +28,7 @@ Jeremy and I kept talking, and I kept prototyping, and recently we announced the
 
 * There's a totally new hybrid 3D/2D interface. You zip around your living room in 3D, then explore the Internet circa 1998 on your retro computer in 2D.
 
-* We've remastered the audio with the help of talented voice actors.
+* We've remastered the audio with new sound effects and voice acting.
 
 * Every aspect of the user interface has been rethought to make solving the mystery smoother and faster. If we did our job properly it'll just get out of the way and let your brain do the work. 
 
