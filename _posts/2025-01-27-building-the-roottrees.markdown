@@ -330,7 +330,7 @@ someday that will be possible.
 ### The Character Portrait Tool
 
 <center><img src="/images/posts/snipper.png" class="embedded" alt="A screenshot of my custom tool"></center>
-<div class='image-desc'>The custom tool I wrote in Godot to help</div>
+<div class='image-desc'>The standalone tool I wrote in Godot to help manage portraits</div>
 
 When you place a person on the family tree, you have to add a photo portrait, that you extract from a piece of evidence by 
 clicking on it.
