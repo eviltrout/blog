@@ -6,9 +6,12 @@ date: 2025-01-27
 
 [The Roottrees are Dead](https://store.steampowered.com/app/2754380/The_Roottrees_are_Dead/) was released on January 15, 2025 and 
 it did much better than I ever expected. The reception has been amazing. In just over a week the game hit the magic mark of 500 
-reviews on Steam and triggered the "Overwhelmingly Positive" status. On BlueSky, Bloomberg writer 
+reviews on Steam and triggered the "Overwhelmingly Positive" status. 
+
+On BlueSky, Bloomberg writer 
 [Jason Schreier blew me away when he posted](https://bsky.app/profile/jasonschreier.bsky.social/post/3lfazufigek23): 
-"Seven days into 2025 and I've already played what I suspect will be one of my favorite games of the year: The Roottrees Are Dead." Wow!
+
+> "Seven days into 2025 and I've already played what I suspect will be one of my favorite games of the year: The Roottrees Are Dead." Wow!
 
 Now that the dust has settled a little bit and I've caught up on bug reports, I thought it would be fun to write up some of the
 technical details involved in building the Steam version while they are still fresh in my mind. "The Roottrees are Dead" is nothing
@@ -254,7 +257,13 @@ it would merge the two together into a new tree. At that point, I'd call the `pu
 RichTextLabel myself to render it. 
 
 This is another area where I was worried about performance. Surely GDScript wasn't designed to parse strings,
-build syntax trees and then render them, however it was super fast! 
+build syntax trees, and then render them, however it was super fast! 
+
+I found some bugs in Godot while implementing this feature, so I authored two pull
+requests ([1](https://github.com/godotengine/godot/pull/100329), [2](https://github.com/godotengine/godot/pull/100208))
+that were merged into the engine. I don't know C++ very well, but I found the code base to be
+well organized and clear. I think I spent more time getting an environment set up where I could compile/test/debug
+the engine than I did fixing the bugs themselves. 
 
 
 ### Unit Testing
@@ -304,4 +313,117 @@ The tool took me roughly two days to code, but saved me a huge amount of time ov
 professional illustrations from our artist, I could quickly jump in, move some rectangles around and click export and the
 game was good to go. Godot is quite well suited for GUI applications. I think people should consider it for things other
 than games.
+
+
+### Cut Scenes
+
+One thing that really impressed me about Godot when I started learning it was its 
+[AnimationPlayer](https://docs.godotengine.org/en/stable/classes/class_animationplayer.html) system. It makes it 
+really easy to animate just about any property in your game. It can also call methods and play sounds. The Roottrees
+are Dead uses it quite often.
+
+However, for the cut scenes I wanted much more functionality:
+
+* Individual dialogue lines needed to be skippable, but if you didn't skip them I wanted it to pause until you clicked
+ahead.
+* Conditional logic to do different things depending on what the player had done. This is usually different lines of
+dialogue but not always!
+
+I ended up building my own abstraction to do this using the [Command Pattern](https://en.wikipedia.org/wiki/Command_pattern).
+Each command would be something like `SayDialogue`, `PlayAnimation` or `MoveCamera`. Commands had a basic `_on_start` method,
+and had to call `_finished()` in their base class when the step was over. They also could implement `_on_skip` if they were
+skippable by the user.
+
+A very useful command was `sync()`, which could take a closure to execute any code I wanted at that point. And then
+any cut scene could declare `finally()` which would be called to set the game explicitly to the desired state at 
+the end of the scene in case it was skipped.
+
+Here's an example of the code that plays the intro cutscene:
+
+```gdscript
+func build_intro() -> CutScene:
+	var home := context.home
+	var scene := _create_scene(&"intro.start")
+	scene.sync(func():
+		home.music_player.stop()
+		context.cameras.cut_to(&"home")
+	)
+	scene.use_camera(home.active_cam)
+	scene.hide(home.indoor_lights)
+	scene.sync(home.fan.light_off)
+
+	scene.delay(2.0)
+	scene.show(intro_date)
+	scene.delay(2.0)
+	scene.hide(intro_date)
+	scene.delay(0.5)
+
+	scene.animate(home.tv_animations, &"intro")
+	scene.animate(title_card.animation_player, &"show")
+	scene.use_camera(home.active_cam)
+	scene.delay(1.0)
+
+	scene.finally(func():
+		intro_date.visible = false
+		title_card.visible = false
+		home.active_cam.make_current()
+		clear_subtitle(_last_tv_sub)
+		home.fan.light_on()
+		home.indoor_lights.visible = true
+		home.tv.stop()
+
+		if !home.music_player.is_playing():
+			home.music_player.play(&"RoottreesAreDead")
+	)
+	return scene
+
+
+### Saving Games
+
+The save game code was taken from [The Secrets of Skellig](https://secretsofskellig.com/), the game I was working on
+prior to this project. 
+
+There is a global `Store` object in the game which manages an abstraction called `Chunks`. Anywhere in the game where
+I want to remember something permanently, I can declare an instance of a `Chunk` for the data and register it with
+the store with an id.
+
+The `Store` spawns a background thread that sleeps most of the time and periodically checks for dirty data. If it
+finds something new to write, it triggers an operation where the data is written to a temporary file, and once complete, 
+moves it into place.
+
+GDScript exposes some nice methods for spawning and working with threads, but as with most languages you have to be
+very careful when doing it. It's easy to shoot yourself in the foot if you aren't being careful about shared resources.
+
+In theory my code can never write an incomplete save, as the save will never move into place unless it was 
+created successfully. **Unfortuantely**, I have gotten a couple rare bug reports of corrupt save files which is baffling
+to me. One was entirely full of `0`s! I assume this is some kind of hardware failure but I'm not sure how it's possible.
+It's something I'll have to think about in the future.
+
+
+### Final Thoughts
+
+This is the first game I've shipped in almost 20 years, and I had a lot of fun working on it. Game development flexes
+quite different muscles than the web development I spent most of my proffesional career on. 
+
+In particular, I found myself doing a lot more work up front to pre-process everything. If I had a list of names to
+sort, why bother at runtime? I could sort it in advance! In the web world, your database is usually growing all the
+time and you have to be able to query the current state. In a game, an embarassing amount of data never changes.
+
+In general I also tried to avoid creating new objects, especially if it was some operation that happened frequently
+like every frame. If there was a way I could create my instances up front and then re-use them, I always would do that.
+
+Speaking of frame based code, by default Godot's templates will create a `_process()` method on any node you want
+to script that executes every frame, and I found I almost never wanted that! I always preferred to trigger things
+from user input callbacks. If something needed to move in the background I'd create a 
+[Tween](https://docs.godotengine.org/en/stable/classes/class_tween.html) or a 
+[Timer](https://docs.godotengine.org/en/stable/classes/class_timer.html) to worry about it. 
+
+I first played the itch version of the game in November of 2023 and the Steam version shipped on January 2025,
+so development took just over a year. Even though this is a remake, I'm amazed at how much I was able to achieve
+in that time frame. I have Godot to thank for this!
+
+The game has already sold enough copies that I can justify funding and working on another one. I'm not sure what 
+that will be at this point. I might return to my crossword game, or spend some time prototyping a couple of other ideas.
+A few people have even pitched me their game ideas which sounds interesting. If you have a proof of concept of
+a detective/mystery type game please reach out and let me know, I'd love to hear your pitch.
 
