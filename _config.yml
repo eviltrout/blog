@@ -18,10 +18,15 @@ description: >- # this means to ignore newlines until "baseurl:"
   A place for my thoughts on software development.
 baseurl: "" # the subpath of your site, e.g. /blog
 url: "https://eviltrout.com"
-twitter_username: eviltrout
 github_username:  eviltrout
 instagram_username: eviltrout
 youtube_username: robinward
+mastodon:
+  - username: eviltrout
+    instance: carpdiem.online
+bluesky_username: eviltrout.com
+
+
 
 # Build settings
 markdown: kramdown
